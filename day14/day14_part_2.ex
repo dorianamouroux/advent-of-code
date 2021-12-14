@@ -3,7 +3,7 @@ defmodule Day14 do
   def main() do
     {initial, mappings} = Parsing.read_file()
     initial
-    |> string_to_map_count(mappings)
+    |> string_to_map_count()
     |> apply_step(mappings, @nb_step)
     |> count_result(String.first(initial))
     |> Enum.min_max_by(fn {_, nb} -> nb end)
@@ -12,8 +12,8 @@ defmodule Day14 do
   end
 
   # "NNCB" => %{NN => 1, NC => 1, CB => 1}
-  def string_to_map_count(initial, mappings) do
-    list_of_pairs = initial
+  def string_to_map_count(initial) do
+    initial
     |> String.split("", trim: true)
     |> Enum.chunk_every(2, 1, :discard)
     |> Enum.map(&Enum.join/1)
