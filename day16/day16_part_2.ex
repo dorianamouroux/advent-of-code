@@ -1,5 +1,5 @@
 defmodule Packet do
-  defstruct [:type, :version, :length, children: [] ]
+  defstruct [:type, :version, :length, children: [], value: 0 ]
 end
 
 defmodule Day6 do
@@ -13,29 +13,21 @@ defmodule Day6 do
     |> IO.inspect(charlists: :as_lists)
   end
 
-  #extract first children if its a packet type 4
-  def resolve_value(%Packet{type: 4, children: [value]}), do: value
+
+  def compute(%Packet{type: 0, children: children}), do: Enum.sum(children)
+  def compute(%Packet{type: 1, children: children}), do: Enum.product(children)
+  def compute(%Packet{type: 2, children: children}), do: Enum.min(children)
+  def compute(%Packet{type: 3, children: children}), do: Enum.max(children)
+  def compute(%Packet{type: 4, value: value}), do: value
+  def compute(%Packet{type: 5, children: [first, second]}), do: if first < second, do: 1, else: 0
+  def compute(%Packet{type: 6, children: [first, second]}), do: if first > second, do: 1, else: 0
+  def compute(%Packet{type: 7, children: [first, second]}), do: if first == second, do: 1, else: 0
   def resolve_value(packet) do
-    children = Enum.map(packet.children, fn
+    resolved_children = Enum.map(packet.children, fn
       %Packet{} = packet -> resolve_value(packet)
       number -> number
     end)
-
-    case packet.type do
-      0 -> Enum.sum(children)
-      1 -> if(Enum.count(children) == 1, do: Enum.at(children, 0), else: Enum.product(children))
-      2 -> Enum.min(children)
-      3 -> Enum.max(children)
-      5 ->
-        [first, second] = children
-        if(first < second, do: 1, else: 0)
-      6 ->
-        [first, second] = children
-        if(first > second, do: 1, else: 0)
-      7 ->
-        [first, second] = children
-        if(first == second, do: 1, else: 0)
-    end
+    compute(Map.put(packet, :children, resolved_children))
   end
 
   def read_all_packets(to_decrypt) do
@@ -56,7 +48,7 @@ defmodule Day6 do
       packet = %Packet{
         version: version,
         type: type,
-        children: [number],
+        value: number,
         length: header_length + length,
       }
       {packet, to_decrypt}
