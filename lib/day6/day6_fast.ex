@@ -1,12 +1,13 @@
-defmodule Day6 do
+defmodule Day6.Part2 do
   @nb_cycle 256
 
-  def main() do
-    initial_fishes = read_file() |> Enum.frequencies()
+  def main(input) do
+    initial_fishes = read_file(input) |> Enum.frequencies()
 
     1..@nb_cycle
     |> Enum.reduce(initial_fishes, fn _, fishes ->
       nb_new_fishes = Map.get(fishes, 0, 0)
+
       fishes
       |> apply_fish_cycle()
       |> Map.put(8, nb_new_fishes)
@@ -23,14 +24,10 @@ defmodule Day6 do
     end
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.trim()
     |> String.split(",", trim: true)
     |> Enum.map(&String.to_integer/1)
   end
 end
-
-Day6.main()

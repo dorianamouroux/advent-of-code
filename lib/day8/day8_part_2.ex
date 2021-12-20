@@ -1,13 +1,13 @@
-defmodule Day8 do
+defmodule Day8.Part2 do
   def main() do
     readings = Parsing.read_file()
-
 
     readings
     |> Enum.map(fn [models, numbers] ->
       word_to_number = Model.analyze(models)
+
       numbers
-      |> Enum.map(& find_number(word_to_number, &1))
+      |> Enum.map(&find_number(word_to_number, &1))
       |> Enum.join()
       |> String.to_integer()
     end)
@@ -16,7 +16,7 @@ defmodule Day8 do
   end
 
   def find_number(models, number) do
-    {_, number } = Enum.find(models, fn {set, _} -> MapSet.equal?(set, number) end)
+    {_, number} = Enum.find(models, fn {set, _} -> MapSet.equal?(set, number) end)
     number
   end
 end
@@ -28,11 +28,12 @@ defmodule Model do
     four = get_number_with_size(models, 4)
     eight = get_number_with_size(models, 7)
 
-    models = models
-    |> exclude_known_letter(one)
-    |> exclude_known_letter(seven)
-    |> exclude_known_letter(four)
-    |> exclude_known_letter(eight)
+    models =
+      models
+      |> exclude_known_letter(one)
+      |> exclude_known_letter(seven)
+      |> exclude_known_letter(four)
+      |> exclude_known_letter(eight)
 
     top_segment = MapSet.difference(seven, one) |> Enum.at(0)
     bottom_segment = get_missing_segment(models, MapSet.put(four, top_segment))
@@ -41,9 +42,10 @@ defmodule Model do
 
     models = exclude_known_letter(models, nine)
 
-    zero = models
-    |> get_numbers_with_size(6)
-    |> Enum.find(& MapSet.subset?(one, &1))
+    zero =
+      models
+      |> get_numbers_with_size(6)
+      |> Enum.find(&MapSet.subset?(one, &1))
 
     models = exclude_known_letter(models, zero)
 
@@ -51,11 +53,11 @@ defmodule Model do
 
     models = exclude_known_letter(models, six)
 
-    three = Enum.find(models, & MapSet.subset?(one, &1))
+    three = Enum.find(models, &MapSet.subset?(one, &1))
 
     models = exclude_known_letter(models, three)
 
-    five = Enum.find(models, & MapSet.subset?(&1, six))
+    five = Enum.find(models, &MapSet.subset?(&1, six))
 
     models = exclude_known_letter(models, five)
 
@@ -71,12 +73,12 @@ defmodule Model do
       {six, "6"},
       {seven, "7"},
       {eight, "8"},
-      {nine, "9"},
+      {nine, "9"}
     ]
   end
 
   def exclude_known_letter(models, letter) do
-    Enum.reject(models, & MapSet.equal?(&1, letter))
+    Enum.reject(models, &MapSet.equal?(&1, letter))
   end
 
   def get_missing_segment(models, letter) do
@@ -88,7 +90,7 @@ defmodule Model do
   end
 
   def get_numbers_with_size(models, size) do
-    Enum.filter(models, & MapSet.size(&1) == size)
+    Enum.filter(models, &(MapSet.size(&1) == size))
   end
 
   def get_number_with_size(models, size) do
@@ -97,9 +99,9 @@ defmodule Model do
 end
 
 defmodule Parsing do
-
   def read_file() do
     [filename] = System.argv()
+
     filename
     |> File.read!()
     |> String.split("\n", trim: true)
@@ -115,8 +117,6 @@ defmodule Parsing do
   defp parse_list_nb(list) do
     list
     |> String.split(" ", trim: true)
-    |> Enum.map(& &1 |> String.split("", trim: true) |> MapSet.new())
+    |> Enum.map(&(&1 |> String.split("", trim: true) |> MapSet.new()))
   end
 end
-
-Day8.main()

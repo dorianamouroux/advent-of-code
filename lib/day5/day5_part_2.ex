@@ -1,7 +1,9 @@
-defmodule Day5 do
+defmodule Day5.Part2 do
+  alias Day5.Part2.Parsing
+  alias Day5.Part2.Canvas
 
-  def main() do
-    vectors = Parsing.read_file()
+  def main(input) do
+    vectors = Parsing.read_file(input)
 
     canvas_with_vectors = Canvas.draw_vectors(vectors)
 
@@ -11,11 +13,9 @@ defmodule Day5 do
     |> Enum.count()
     |> IO.inspect()
   end
-
 end
 
-defmodule Canvas do
-
+defmodule Day5.Part2.Canvas do
   def draw_vectors(vectors) do
     Enum.reduce(vectors, %{}, fn vector, canvas ->
       draw_vector(canvas, vector)
@@ -75,36 +75,35 @@ defmodule Canvas do
     current = Map.get(canvas, position, 0)
     Map.put(canvas, position, current + 1)
   end
-
 end
 
-defmodule Parsing do
-  def read_file() do
-    raw_file()
+defmodule Day5.Part2.Parsing do
+  def read_file(input) do
+    raw_file(input)
     |> Enum.map(&parse_to_vector/1)
   end
 
   defp parse_to_vector(line) do
-    [start_v, end_v] = line
-    |> String.split("->")
-    |> Enum.map(&parse_points/1)
+    [start_v, end_v] =
+      line
+      |> String.split("->")
+      |> Enum.map(&parse_points/1)
 
     {start_v, end_v}
   end
 
   defp parse_points(point) do
-    [left, right] = point
-    |> String.trim()
-    |> String.split(",")
-    |> Enum.map(&binary_to_int/1)
+    [left, right] =
+      point
+      |> String.trim()
+      |> String.split(",")
+      |> Enum.map(&binary_to_int/1)
 
     {left, right}
   end
 
-  defp raw_file() do
-    [filename] = System.argv()
-    filename
-    |> File.read!()
+  defp raw_file(input) do
+    input
     |> String.split("\n")
     |> Enum.filter(fn line -> line != "" end)
   end
@@ -114,5 +113,3 @@ defmodule Parsing do
     value
   end
 end
-
-Day5.main()

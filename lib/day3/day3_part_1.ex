@@ -1,7 +1,6 @@
-defmodule Day3 do
-
-  def main() do
-    readings = read_file()
+defmodule Day3.Part1 do
+  def main(input) do
+    readings = read_file(input)
 
     gamma = find_gamma_rate(readings)
     epsilon = reverse_number(gamma)
@@ -14,15 +13,17 @@ defmodule Day3 do
     nb_input = Enum.count(readings)
 
     for i <- 0..(size_word - 1) do
-      value_at_col = for reading <- readings do
-        String.at(reading, i)
-      end
+      value_at_col =
+        for reading <- readings do
+          String.at(reading, i)
+        end
 
-      nb_ones = value_at_col
-      |> Enum.filter(fn value -> value == "1" end)
-      |> Enum.count()
+      nb_ones =
+        value_at_col
+        |> Enum.filter(fn value -> value == "1" end)
+        |> Enum.count()
 
-      case nb_ones > (nb_input / 2) do
+      case nb_ones > nb_input / 2 do
         true -> "1"
         false -> "0"
       end
@@ -37,20 +38,17 @@ defmodule Day3 do
   end
 
   defp binary_to_int(number) do
-    {value, _} = number
-    |> Enum.join()
-    |> Integer.parse(2)
+    {value, _} =
+      number
+      |> Enum.join()
+      |> Integer.parse(2)
+
     value
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.split("\n")
     |> Enum.filter(fn line -> line != "" end)
   end
-
 end
-
-Day3.main()

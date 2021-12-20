@@ -1,18 +1,17 @@
-defmodule Day10 do
-
+defmodule Day10.Part2 do
   @closing_tags [">", ")", "}", "]"]
   @pairs ["<>", "()", "{}", "[]"]
   @score %{
     "(" => 1,
     "[" => 2,
     "{" => 3,
-    "<" => 4,
+    "<" => 4
   }
 
   def main() do
     read_file()
     |> Enum.map(&resolve_symboles/1)
-    |> Enum.reject(& String.contains?(&1, @closing_tags))
+    |> Enum.reject(&String.contains?(&1, @closing_tags))
     |> Enum.map(&get_score_per_line/1)
     |> Enum.sort()
     |> then(fn scores ->
@@ -25,7 +24,7 @@ defmodule Day10 do
   def get_score_per_line(line) do
     line
     |> String.split("", trim: true)
-    |> Enum.reverse
+    |> Enum.reverse()
     |> Enum.reduce(0, fn letter, total ->
       total * 5 + Map.get(@score, letter, 0)
     end)
@@ -43,10 +42,9 @@ defmodule Day10 do
 
   defp read_file() do
     [filename] = System.argv()
+
     filename
     |> File.read!()
     |> String.split("\n", trim: true)
   end
 end
-
-Day10.main()

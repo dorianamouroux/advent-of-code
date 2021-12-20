@@ -1,17 +1,17 @@
-defmodule Day12 do
-
+defmodule Day12.Part1 do
   def main() do
-    paths = Parsing.parse()
+    paths = Day12.Part1.Parsing.parse()
 
     find_nb_paths(paths, ["start"])
-    |> IO.inspect
+    |> IO.inspect()
   end
 
   def find_nb_paths(_, ["end" | _]), do: 1
+
   def find_nb_paths(paths, [to_visit | _] = visited) do
     paths
     |> Map.get(to_visit)
-    |> Enum.reject(& should_skip(&1, visited))
+    |> Enum.reject(&should_skip(&1, visited))
     |> Enum.reduce(0, fn next, total ->
       total + find_nb_paths(paths, [next | visited])
     end)
@@ -28,9 +28,10 @@ defmodule Day12 do
   end
 end
 
-defmodule Parsing do
+defmodule Day12.Part1.Parsing do
   def parse() do
     [filename] = System.argv()
+
     filename
     |> File.read!()
     |> String.split("\n", trim: true)
@@ -39,13 +40,11 @@ defmodule Parsing do
 
   defp paths_as_map(paths) do
     paths
-    |> Enum.map(& String.split(&1, "-"))
+    |> Enum.map(&String.split(&1, "-"))
     |> then(fn paths ->
       reversed = Enum.map(paths, &Enum.reverse/1)
       paths ++ reversed
     end)
-    |> Enum.group_by(& Enum.at(&1, 0), & Enum.at(&1, 1))
+    |> Enum.group_by(&Enum.at(&1, 0), &Enum.at(&1, 1))
   end
 end
-
-Day12.main()

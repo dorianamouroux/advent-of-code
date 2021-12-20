@@ -1,7 +1,9 @@
-defmodule Day4 do
+defmodule Day4.Part1 do
+  alias Day4.Part1.Board
+  alias Day4.Part1.Parsing
 
-  def main() do
-    {inputs, boards} = Parsing.read_file()
+  def main(input) do
+    {inputs, boards} = Parsing.read_file(input)
 
     {final_number, winning_board} = draw_numbers(boards, inputs)
     sum_unmarked_numbers = Board.sum_unmarked_numbers(winning_board)
@@ -13,6 +15,7 @@ defmodule Day4 do
 
   def draw_numbers(boards, [drawn_number | rest]) do
     boards_with_number = Board.put_number(boards, drawn_number)
+
     case Board.get_winning_board(boards_with_number) do
       nil -> draw_numbers(boards_with_number, rest)
       board -> {drawn_number, board}
@@ -20,8 +23,7 @@ defmodule Day4 do
   end
 end
 
-defmodule Board do
-
+defmodule Day4.Part1.Board do
   def sum_unmarked_numbers(board) do
     board
     |> Enum.filter(fn {_, drawn} -> drawn == false end)
@@ -36,12 +38,14 @@ defmodule Board do
   def has_won(board) do
     two_dim_board = Enum.chunk_every(board, 5)
 
-    has_won_horizontal = two_dim_board
-    |> Enum.any?(&line_won/1)
+    has_won_horizontal =
+      two_dim_board
+      |> Enum.any?(&line_won/1)
 
-    has_won_vertical = two_dim_board
-    |> list_of_cols()
-    |> Enum.any?(&line_won/1)
+    has_won_vertical =
+      two_dim_board
+      |> list_of_cols()
+      |> Enum.any?(&line_won/1)
 
     has_won_horizontal or has_won_vertical
   end
@@ -49,8 +53,9 @@ defmodule Board do
   def list_of_cols(board) do
     nb_cols = Enum.count(board)
     range = 0..(nb_cols - 1)
+
     Enum.map(range, fn i ->
-      Enum.map(board, &(Enum.at(&1, i)))
+      Enum.map(board, &Enum.at(&1, i))
     end)
   end
 
@@ -59,7 +64,7 @@ defmodule Board do
   end
 
   def put_number(boards, number) do
-    Enum.map(boards, &(put_number_in_board(&1, number)))
+    Enum.map(boards, &put_number_in_board(&1, number))
   end
 
   def put_number_in_board(board, drawn_number) do
@@ -70,12 +75,11 @@ defmodule Board do
       end
     end)
   end
-
 end
 
-defmodule Parsing do
-  def read_file() do
-    file = raw_file()
+defmodule Day4.Part1.Parsing do
+  def read_file(input) do
+    file = raw_file(input)
     [numbers_to_draw | raw_boards] = file
     {parse_numbers(numbers_to_draw), parse_boards(raw_boards)}
   end
@@ -100,10 +104,8 @@ defmodule Parsing do
     |> Enum.map(fn number -> {number, false} end)
   end
 
-  defp raw_file() do
-    [filename] = System.argv()
-    filename
-    |> File.read!()
+  defp raw_file(input) do
+    input
     |> String.split("\n")
     |> Enum.filter(fn line -> line != "" end)
   end
@@ -113,5 +115,3 @@ defmodule Parsing do
     number
   end
 end
-
-Day4.main()

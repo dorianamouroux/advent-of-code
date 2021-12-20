@@ -1,12 +1,12 @@
-defmodule Day6 do
-
-  def main() do
-    initial_fishes = read_file()
+defmodule Day6.Part1 do
+  def main(input) do
+    initial_fishes = read_file(input)
 
     1..18
     |> Enum.reduce(initial_fishes, fn _, fishes ->
       IO.inspect(Enum.frequencies(fishes))
-      nb_new_fishes = Enum.count(fishes, & &1 == 0)
+      nb_new_fishes = Enum.count(fishes, &(&1 == 0))
+
       fishes
       |> apply_fish_cycle()
       |> Kernel.++(List.duplicate(8, nb_new_fishes))
@@ -22,14 +22,10 @@ defmodule Day6 do
     end)
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.trim()
     |> String.split(",", trim: true)
     |> Enum.map(&String.to_integer/1)
   end
 end
-
-Day6.main()

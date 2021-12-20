@@ -1,8 +1,7 @@
-defmodule Day2 do
-
-  def main() do
-    steps = read_file()
-    {position, depth, aim} = run_steps(steps, 0, 0, 0)
+defmodule Day2.Part2 do
+  def main(input) do
+    steps = read_file(input)
+    {position, depth, _} = run_steps(steps, 0, 0, 0)
 
     IO.inspect("position = #{position}")
     IO.inspect("depth = #{depth}")
@@ -14,19 +13,18 @@ defmodule Day2 do
   end
 
   def run_steps([current_step | next_steps], position, depth, aim) do
-    {position, depth, aim} = case current_step do
-      {"forward", size} -> {position + size, depth + (aim * size), aim}
-      {"up", size} -> {position, depth, aim - size}
-      {"down", size} -> {position, depth, aim + size}
-    end
+    {position, depth, aim} =
+      case current_step do
+        {"forward", size} -> {position + size, depth + aim * size, aim}
+        {"up", size} -> {position, depth, aim - size}
+        {"down", size} -> {position, depth, aim + size}
+      end
 
     run_steps(next_steps, position, depth, aim)
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.split("\n")
     |> Enum.filter(fn line -> line != "" end)
     |> Enum.map(fn line ->
@@ -35,7 +33,4 @@ defmodule Day2 do
       {action, size}
     end)
   end
-
 end
-
-Day2.main()

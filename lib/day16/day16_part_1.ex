@@ -1,11 +1,13 @@
-defmodule Packet do
-  defstruct [:type, :version, :length, children: [] ]
+defmodule Day16.Part1.Packet do
+  defstruct [:type, :version, :length, children: []]
 end
 
-defmodule Day6 do
+defmodule Day16.Part1 do
+  alias Day16.Part1.Packet
 
   def main() do
-    to_decrypt = Parsing.read_file_in_binary()
+    to_decrypt = Day16.Part1.Parsing.read_file_in_binary()
+
     to_decrypt
     |> read_all_packets
     |> IO.inspect(charlists: :as_lists)
@@ -14,12 +16,14 @@ defmodule Day6 do
   end
 
   def sum_versions(%Packet{children: []} = packet), do: packet.version
+
   def sum_versions(%Packet{} = packet) do
     packet.children
-    |> Enum.map(& sum_versions(&1))
+    |> Enum.map(&sum_versions(&1))
     |> Enum.sum()
     |> Kernel.+(packet.version)
   end
+
   def sum_versions(_), do: 0
 
   def read_all_packets(to_decrypt) do
@@ -37,22 +41,28 @@ defmodule Day6 do
 
     if type == 4 do
       {number, length, to_decrypt} = read_number(to_decrypt)
+
       packet = %Packet{
         version: version,
         type: type,
         children: [number],
-        length: header_length + length,
+        length: header_length + length
       }
+
       {packet, to_decrypt}
     else
-      {length_children, children_type, length_children_value, to_decrypt} = get_length_children(to_decrypt)
+      {length_children, children_type, length_children_value, to_decrypt} =
+        get_length_children(to_decrypt)
+
       {children, to_decrypt} = get_children(to_decrypt, children_type, length_children, [])
+
       packet = %Packet{
         version: version,
         type: type,
         children: children,
-        length: header_length + sum_children_length(children) + length_children_value,
+        length: header_length + sum_children_length(children) + length_children_value
       }
+
       {packet, to_decrypt}
     end
   end
@@ -64,6 +74,7 @@ defmodule Day6 do
   end
 
   def get_children(to_decrypt, _, 0, children), do: {children, to_decrypt}
+
   def get_children(to_decrypt, children_type, length, children) do
     {next_children, to_decrypt} = read_next_packet(to_decrypt)
     children = [next_children | children]
@@ -92,8 +103,7 @@ defmodule Day6 do
   end
 end
 
-
-defmodule Parsing do
+defmodule Day16.Part1.Parsing do
   @hex_to_bin %{
     "0" => "0000",
     "1" => "0001",
@@ -110,17 +120,16 @@ defmodule Parsing do
     "C" => "1100",
     "D" => "1101",
     "E" => "1110",
-    "F" => "1111",
+    "F" => "1111"
   }
 
   def read_file_in_binary() do
     [to_decrypt] = System.argv()
+
     to_decrypt
     |> String.trim()
     |> String.split("", trim: true)
-    |> Enum.map(& Map.get(@hex_to_bin, &1))
+    |> Enum.map(&Map.get(@hex_to_bin, &1))
     |> Enum.join("")
   end
 end
-
-Day6.main()

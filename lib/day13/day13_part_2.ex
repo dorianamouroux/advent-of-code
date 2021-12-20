@@ -1,7 +1,6 @@
-defmodule Day13 do
-
+defmodule Day13.Part2 do
   def main() do
-    {points, folds} = Parsing.read_file()
+    {points, folds} = Day13.Part2.Parsing.read_file()
 
     points
     |> apply_folds(folds)
@@ -19,14 +18,19 @@ defmodule Day13 do
     {_, max_y} = Enum.max_by(points, fn {_, y} -> y end)
 
     for y <- 0..max_y do
-      IO.puts Enum.join(for x <- 0..max_x do
-        if MapSet.member?(points, {x, y}), do: "# ", else: ". "
-      end)
+      IO.puts(
+        Enum.join(
+          for x <- 0..max_x do
+            if MapSet.member?(points, {x, y}), do: "# ", else: ". "
+          end
+        )
+      )
     end
   end
 
   def apply_fold({x, y}, "y=" <> line) do
     line = String.to_integer(line)
+
     if y > line do
       diff = abs(y - line)
       {x, line - diff}
@@ -37,6 +41,7 @@ defmodule Day13 do
 
   def apply_fold({x, y}, "x=" <> line) do
     line = String.to_integer(line)
+
     if x > line do
       diff = abs(x - line)
       {line - diff, y}
@@ -46,18 +51,22 @@ defmodule Day13 do
   end
 end
 
-defmodule Parsing do
+defmodule Day13.Part2.Parsing do
   def read_file() do
     [filename] = System.argv()
-    file_content = filename
-    |> File.read!()
-    |> String.split("\n", trim: true)
 
-    folds = file_content
+    file_content =
+      filename
+      |> File.read!()
+      |> String.split("\n", trim: true)
+
+    folds =
+      file_content
       |> Enum.map(&extract_folding_instruction/1)
       |> Enum.reject(&is_nil/1)
 
-    points = file_content
+    points =
+      file_content
       |> Enum.drop(-Enum.count(folds))
       |> points_to_mapset()
 
@@ -74,5 +83,3 @@ defmodule Parsing do
   defp extract_folding_instruction("fold along " <> fold_part), do: fold_part
   defp extract_folding_instruction(_), do: nil
 end
-
-Day13.main()

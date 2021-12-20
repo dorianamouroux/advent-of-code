@@ -1,5 +1,4 @@
-defmodule Day9 do
-
+defmodule Day9.Part2 do
   def main() do
     grid = read_file()
 
@@ -16,7 +15,9 @@ defmodule Day9 do
 
   def find_basins(grid, basins) do
     case get_pos_of_next_basin(grid) do
-      nil -> basins
+      nil ->
+        basins
+
       {x, y} ->
         {grid, basin_size} = extract_basin(grid, x, y, 0)
         find_basins(grid, [basin_size | basins])
@@ -39,16 +40,18 @@ defmodule Day9 do
   end
 
   def get_pos_of_next_basin(grid) do
-    y = Enum.find_index(grid, fn line ->
-      Enum.any?(line, &in_bassin/1)
-    end)
+    y =
+      Enum.find_index(grid, fn line ->
+        Enum.any?(line, &in_bassin/1)
+      end)
 
     if is_nil(y) do
       nil
     else
-      x = grid
-      |> Enum.at(y)
-      |> Enum.find_index(&in_bassin/1)
+      x =
+        grid
+        |> Enum.at(y)
+        |> Enum.find_index(&in_bassin/1)
 
       {x, y}
     end
@@ -60,6 +63,7 @@ defmodule Day9 do
   # using 9999 as a large number so if out of grid, it won't count
   def get_at_pos(_grid, x, _y) when x < 0, do: nil
   def get_at_pos(_grid, _x, y) when y < 0, do: nil
+
   def get_at_pos(grid, x, y) do
     case Enum.at(grid, y, []) do
       line -> Enum.at(line, x, nil)
@@ -68,6 +72,7 @@ defmodule Day9 do
 
   defp read_file() do
     [filename] = System.argv()
+
     filename
     |> File.read!()
     |> String.split("\n", trim: true)
@@ -78,5 +83,3 @@ defmodule Day9 do
     end)
   end
 end
-
-Day9.main()
