@@ -1,6 +1,8 @@
 defmodule Day8.Part2 do
-  def main() do
-    readings = Parsing.read_file()
+  alias Day8.Part2.Parsing
+
+  def main(input) do
+    readings = Parsing.read_file(input)
 
     readings
     |> Enum.map(fn [models, numbers] ->
@@ -98,12 +100,9 @@ defmodule Model do
   end
 end
 
-defmodule Parsing do
-  def read_file() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+defmodule Day8.Part2.Parsing do
+  def read_file(input) do
+    input
     |> String.split("\n", trim: true)
     |> Enum.map(&parse_line/1)
   end

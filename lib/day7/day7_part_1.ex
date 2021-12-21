@@ -1,6 +1,6 @@
 defmodule Day7.Part1 do
-  def main() do
-    positions = read_file()
+  def main(input) do
+    positions = read_file(input)
 
     {min_pos, max_pos} = Enum.min_max(positions)
 
@@ -16,11 +16,8 @@ defmodule Day7.Part1 do
     |> Enum.sum()
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.trim()
     |> String.split(",")
     |> Enum.map(&String.to_integer/1)

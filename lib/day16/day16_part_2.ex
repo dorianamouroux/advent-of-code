@@ -5,8 +5,8 @@ end
 defmodule Day16.Part2 do
   alias Day16.Part2.Packet
 
-  def main() do
-    to_decrypt = Day16.Part2.Parsing.read_file_in_binary()
+  def main(input) do
+    to_decrypt = Day16.Part2.Parsing.read_file_in_binary(input)
 
     to_decrypt
     |> read_all_packets
@@ -133,10 +133,8 @@ defmodule Day16.Part2.Parsing do
     "F" => "1111"
   }
 
-  def read_file_in_binary() do
-    [to_decrypt] = System.argv()
-
-    to_decrypt
+  def read_file_in_binary(input) do
+    input
     |> String.trim()
     |> String.split("", trim: true)
     |> Enum.map(&Map.get(@hex_to_bin, &1))

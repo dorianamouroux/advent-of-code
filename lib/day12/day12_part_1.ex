@@ -1,6 +1,6 @@
 defmodule Day12.Part1 do
-  def main() do
-    paths = Day12.Part1.Parsing.parse()
+  def main(input) do
+    paths = Day12.Part1.Parsing.parse(input)
 
     find_nb_paths(paths, ["start"])
     |> IO.inspect()
@@ -29,11 +29,8 @@ defmodule Day12.Part1 do
 end
 
 defmodule Day12.Part1.Parsing do
-  def parse() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  def parse(input) do
+    input
     |> String.split("\n", trim: true)
     |> paths_as_map()
   end

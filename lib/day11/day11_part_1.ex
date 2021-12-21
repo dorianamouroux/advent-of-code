@@ -1,6 +1,6 @@
 defmodule Day11.Part1 do
-  def main() do
-    grid = read_file()
+  def main(input) do
+    grid = read_file(input)
 
     1..100
     |> Enum.reduce({grid, 0}, fn _, {grid, nb_flashes} ->
@@ -96,11 +96,8 @@ defmodule Day11.Part1 do
     end
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.split("\n", trim: true)
     |> Enum.map(fn line ->
       line

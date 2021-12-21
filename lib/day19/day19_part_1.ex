@@ -28,9 +28,11 @@ defmodule Position do
 end
 
 defmodule Day19.Part1 do
-  def main() do
+  alias Day19.Part1.Parsing
+
+  def main(input) do
     scanners =
-      Parsing.parse()
+      Parsing.parse(input)
       |> IO.inspect()
 
     nb_scanners = Enum.count(Map.keys(scanners))
@@ -211,12 +213,9 @@ defmodule Space do
   end
 end
 
-defmodule Parsing do
-  def parse() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+defmodule Day19.Part1.Parsing do
+  def parse(input) do
+    input
     |> String.split("\n", trim: true)
     |> chunk_by_scanner(%{})
   end

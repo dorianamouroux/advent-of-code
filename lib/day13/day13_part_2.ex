@@ -1,6 +1,8 @@
 defmodule Day13.Part2 do
-  def main() do
-    {points, folds} = Day13.Part2.Parsing.read_file()
+  alias Day13.Part2.Parsing
+
+  def main(input) do
+    {points, folds} = Parsing.read_file(input)
 
     points
     |> apply_folds(folds)
@@ -52,13 +54,8 @@ defmodule Day13.Part2 do
 end
 
 defmodule Day13.Part2.Parsing do
-  def read_file() do
-    [filename] = System.argv()
-
-    file_content =
-      filename
-      |> File.read!()
-      |> String.split("\n", trim: true)
+  def read_file(input) do
+    file_content = String.split(input, "\n", trim: true)
 
     folds =
       file_content

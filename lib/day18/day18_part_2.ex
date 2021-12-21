@@ -1,8 +1,8 @@
 defmodule Day18.Part2 do
   alias Day18.Part2.Operations
 
-  def main() do
-    Day18.Part2.read_file()
+  def main(input) do
+    Day18.Part2.read_file(input)
     |> compute_all(0)
     |> IO.inspect()
   end
@@ -240,11 +240,8 @@ end
 defmodule Day18.Part2.Parsing do
   alias Day18.Pair
 
-  def read_file() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  def read_file(input) do
+    input
     |> String.split("\n", trim: true)
     |> Enum.reduce({%{}, []}, fn line, {map, pairs} ->
       {root, _, new_map} = string_to_pair(line, nil, map)

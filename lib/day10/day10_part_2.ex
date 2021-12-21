@@ -8,8 +8,8 @@ defmodule Day10.Part2 do
     "<" => 4
   }
 
-  def main() do
-    read_file()
+  def main(input) do
+    read_file(input)
     |> Enum.map(&resolve_symboles/1)
     |> Enum.reject(&String.contains?(&1, @closing_tags))
     |> Enum.map(&get_score_per_line/1)
@@ -40,11 +40,8 @@ defmodule Day10.Part2 do
     end
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.split("\n", trim: true)
   end
 end

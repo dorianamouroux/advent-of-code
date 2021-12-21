@@ -1,6 +1,6 @@
 defmodule Day11.Part2 do
-  def main() do
-    grid = read_file()
+  def main(input) do
+    grid = read_file(input)
 
     Stream.iterate(1, &(&1 + 1))
     |> Enum.reduce_while(grid, fn step, grid ->
@@ -98,11 +98,8 @@ defmodule Day11.Part2 do
     end
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.split("\n", trim: true)
     |> Enum.map(fn line ->
       line

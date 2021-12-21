@@ -1,6 +1,6 @@
 defmodule Day15.Part1 do
-  def main() do
-    {grid, width, height} = Day15.Part1.Parsing.read_file()
+  def main(input) do
+    {grid, width, height} = Day15.Part1.Parsing.read_file(input)
     bottom_right_pos = {width - 1, height - 1}
 
     Enum.reduce_while(
@@ -73,12 +73,9 @@ defmodule Day15.Part1 do
 end
 
 defmodule Day15.Part1.Parsing do
-  def read_file() do
-    [filename] = System.argv()
-
+  def read_file(input) do
     grid_in_double_list =
-      filename
-      |> File.read!()
+      input
       |> String.split("\n", trim: true)
       |> Enum.map(fn line ->
         line

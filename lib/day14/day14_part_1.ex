@@ -1,8 +1,8 @@
 defmodule Day14.Part1 do
   @nb_step 10
 
-  def main() do
-    {initial, mapping} = Day14.Part1.Parsing.read_file()
+  def main(input) do
+    {initial, mapping} = Day14.Part1.Parsing.read_file(input)
 
     after_x_step =
       Enum.reduce(1..@nb_step, initial, fn _, current ->
@@ -36,13 +36,8 @@ defmodule Day14.Part1 do
 end
 
 defmodule Day14.Part1.Parsing do
-  def read_file() do
-    [filename] = System.argv()
-
-    file_content =
-      filename
-      |> File.read!()
-      |> String.split("\n", trim: true)
+  def read_file(input) do
+    file_content = String.split(input, "\n", trim: true)
 
     [initial | mappings] = file_content
     {initial, to_map(mappings)}

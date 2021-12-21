@@ -1,6 +1,6 @@
 defmodule Day12.Part2 do
-  def main() do
-    Day12.Part2.Parsing.parse()
+  def main(input) do
+    Day12.Part2.Parsing.parse(input)
     |> find_end(["start"])
     |> IO.inspect()
   end
@@ -39,11 +39,8 @@ defmodule Day12.Part2 do
 end
 
 defmodule Day12.Part2.Parsing do
-  def parse() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  def parse(input) do
+    input
     |> String.split("\n", trim: true)
     |> paths_as_map()
   end

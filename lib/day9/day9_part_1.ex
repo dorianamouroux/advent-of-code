@@ -1,6 +1,6 @@
 defmodule Day9.Part1 do
-  def main() do
-    grid = read_file()
+  def main(input) do
+    grid = read_file(input)
 
     height = grid |> Enum.count()
     width = grid |> Enum.at(0) |> Enum.count()
@@ -45,11 +45,8 @@ defmodule Day9.Part1 do
     end
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.split("\n", trim: true)
     |> Enum.map(fn line ->
       line

@@ -8,8 +8,8 @@ defmodule Day10.Part1 do
     ">" => 25137
   }
 
-  def main() do
-    read_file()
+  def main(input) do
+    read_file(input)
     |> Enum.map(&resolve_symboles/1)
     |> Enum.filter(&String.contains?(&1, @closing_tags))
     |> Enum.map(&compute_score/1)
@@ -36,11 +36,8 @@ defmodule Day10.Part1 do
     Map.get(@score, wrong_char, 0)
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.split("\n", trim: true)
   end
 end

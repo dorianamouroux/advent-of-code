@@ -1,6 +1,6 @@
 defmodule Day8.Part1 do
-  def main() do
-    readings = read_file()
+  def main(input) do
+    readings = read_file(input)
 
     readings
     |> List.flatten()
@@ -12,11 +12,8 @@ defmodule Day8.Part1 do
     |> IO.inspect()
   end
 
-  defp read_file() do
-    [filename] = System.argv()
-
-    filename
-    |> File.read!()
+  defp read_file(input) do
+    input
     |> String.split("\n", trim: true)
     |> Enum.map(fn line ->
       [_, second_part] = String.split(line, "|")
