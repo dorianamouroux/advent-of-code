@@ -14,16 +14,19 @@ defmodule Advent.CLI do
 
   def main([day, input]) do
     executable_modules = get_executable_modules()
-    module_name = day
-    |> String.split(".")
-    |> Enum.map(&String.capitalize/1)
-    |> Enum.join(".")
 
-    day_to_execute = Enum.find(executable_modules, fn module ->
-      module
-      |> to_string()
-      |> String.starts_with?("Elixir." <> module_name)
-    end)
+    module_name =
+      day
+      |> String.split(".")
+      |> Enum.map(&String.capitalize/1)
+      |> Enum.join(".")
+
+    day_to_execute =
+      Enum.find(executable_modules, fn module ->
+        module
+        |> to_string()
+        |> String.starts_with?("Elixir." <> module_name)
+      end)
 
     if day_to_execute do
       File.read!(input)
@@ -42,5 +45,5 @@ defmodule Advent.CLI do
       has_main? = Kernel.function_exported?(module, :main, 1)
       module_day? and has_main?
     end)
-   end
+  end
 end

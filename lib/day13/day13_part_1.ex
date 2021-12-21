@@ -43,7 +43,8 @@ end
 
 defmodule Day13.Part1.Parsing do
   def read_file(input) do
-    file_content = input
+    file_content =
+      input
       |> String.split("\n", trim: true)
 
     folds =
