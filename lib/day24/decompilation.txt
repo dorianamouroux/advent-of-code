@@ -1,0 +1,57 @@
+# done with https://github.com/mrphlip/aoc/blob/master/2021/24.md
+
+## Decompilation
+
+Stack push A + 8
+
+Stack push B + 16
+
+Stack push C + 4
+
+If D != Stack.pop() - 11
+  Stack push D + 1
+
+Stack push E + 13
+
+Stack push F + 5
+
+Stack push G
+
+If H != Stack.pop() - 5
+  Stack push H + 10
+
+Stack push I + 7
+
+If J != Stack.pop()
+  Stack push J + 2
+
+If K != Stack.pop() - 11
+  Stack push K + 13
+
+If L != Stack.pop() - 13
+  Stack push L + 15
+
+If M != Stack.pop() - 13
+  Stack push M + 14
+
+If N != Stack.pop() - 11
+  Stack push N + 11
+
+
+## Rules
+
+C - 7 = D
+G - 5 = H
+I + 7 = J
+F - 6 = K
+E = L
+B + 3 = M
+A - 3 = N
+
+## Highest
+
+96929994293996
+
+## Lowest
+
+41811761181141
