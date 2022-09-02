@@ -21,3 +21,15 @@ func Map[Input interface{}, Output interface{}](list []Input, fn func(Input)Outp
 
   return newList
 }
+
+func Count[Item interface{}](list []Item, fn func(Item)bool) int {
+  count := 0
+
+  for _, item := range list {
+    if fn(item) {
+      count++
+    }
+  }
+
+  return count
+}
