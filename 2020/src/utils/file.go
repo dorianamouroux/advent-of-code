@@ -14,6 +14,12 @@ func ReadFile(path string) ([]string, error) {
 }
 
 func bytesToLineString(str []byte) ([]string) {
-  strList := strings.Trim(string(str), " \n\t")
-  return strings.Split(strList, "\n")
+  lines := strings.Split(string(str), "\n")
+  return Filter(lines, func (s string)bool {
+    return !isEmpty(s)
+  })
+}
+
+func isEmpty(str string) bool {
+  return strings.Trim(str, "\n\t ") == ""
 }
