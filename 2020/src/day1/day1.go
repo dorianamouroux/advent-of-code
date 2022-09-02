@@ -2,35 +2,10 @@ package main
 
 import (
   "fmt"
-  "os"
-  "strings"
-  "strconv"
+
+  "github.com/dorianamouroux/advent-of-code/src/utils"
 )
 
-func readFile(path string) ([]string, error) {
-  data, err := os.ReadFile(path)
-  if err != nil {
-    return nil, err
-  }
-  return bytesToLineString(data), nil
-}
-
-func bytesToLineString(str []byte) ([]string) {
-  strList := strings.Trim(string(str), " \n\t")
-  return strings.Split(strList, "\n")
-}
-
-func atoiSlice(lines []string) ([]int, error) {
-  linesInt := make([]int, len(lines))
-  for i := 0; i < len(lines); i++ {
-     nb, err := strconv.Atoi(lines[i])
-     if err != nil {
-       return nil, err
-     }
-     linesInt[i] = nb
-  }
-  return linesInt, nil
-}
 
 func part1(lines []int) int {
   nbLines := len(lines)
@@ -59,11 +34,11 @@ func part2(lines []int) int {
 }
 
 func main() {
-  file, errFile := readFile("src/day1/input.txt")
+  file, errFile := utils.ReadFile("src/day1/input.txt")
   if errFile != nil {
     fmt.Println(errFile)
   }
-  data, err := atoiSlice(file)
+  data, err := utils.AtoiSlice(file)
   if err != nil {
     fmt.Println(errFile)
   }
