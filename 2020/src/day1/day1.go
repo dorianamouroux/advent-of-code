@@ -34,13 +34,15 @@ func part2(lines []int) int {
 }
 
 func main() {
-  file, errFile := utils.ReadFile("src/day1/input.txt")
+  file, errFile := utils.ReadInput()
   if errFile != nil {
     fmt.Println(errFile)
+    return
   }
   data, err := utils.AtoiSlice(file)
   if err != nil {
     fmt.Println(errFile)
+    return
   }
   fmt.Println("part1 = ", part1(data))
   fmt.Println("part2 = ", part2(data))

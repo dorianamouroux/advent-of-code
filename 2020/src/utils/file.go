@@ -3,9 +3,23 @@ package utils
 import (
   "os"
   "strings"
+  "flag"
+  "errors"
 )
 
-func ReadFile(path string) ([]string, error) {
+func ReadInput() ([]string, error) {
+  input := flag.String("input", "", "The path of the input file")
+
+  flag.Parse()
+
+  if *input == "" {
+    return nil, errors.New("Please give -input=path")
+  }
+
+  return readFile(*input)
+}
+
+func readFile(path string) ([]string, error) {
   data, err := os.ReadFile(path)
   if err != nil {
     return nil, err
