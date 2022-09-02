@@ -1,0 +1,25 @@
+gitpackage main
+
+import (
+  "fmt"
+
+  "github.com/dorianamouroux/advent-of-code/src/utils"
+)
+
+func part1(_ []string) int {
+  return -1
+}
+
+func part2(_ []string) int {
+  return -1
+}
+
+func main() {
+  file, errFile := utils.ReadInput()
+  if errFile != nil {
+    fmt.Println(errFile)
+    return
+  }
+  fmt.Println("part1 =", part1(file))
+  fmt.Println("part2 =", part2(file))
+}
