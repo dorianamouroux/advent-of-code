@@ -39,11 +39,7 @@ func main() {
     fmt.Println(errFile)
     return
   }
-  data, err := utils.AtoiSlice(file)
-  if err != nil {
-    fmt.Println(errFile)
-    return
-  }
+  data := utils.AtoiSlice(file)
   fmt.Println("part1 = ", part1(data))
   fmt.Println("part2 = ", part2(data))
 }

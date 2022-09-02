@@ -29,7 +29,7 @@ func readFile(path string) ([]string, error) {
 
 func bytesToLineString(str []byte) ([]string) {
   lines := strings.Split(string(str), "\n")
-  return Filter(lines, func (s string)bool {
+  return Filter[string](lines, func (s string)bool {
     return !isEmpty(s)
   })
 }
