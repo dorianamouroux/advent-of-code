@@ -30,27 +30,23 @@ func parseItem(s string) password {
   return password{minLength, maxLength, letter, value}
 }
 
-func isPasswordValidPart1(p password) bool {
-  nbLetter := strings.Count(p.value, p.letter)
-  return nbLetter >= p.minLength && nbLetter <= p.maxLength
-}
-
-func isPasswordValidPart2(p password) bool {
-  firstChar := string(p.value[p.minLength - 1])
-  secondChar := string(p.value[p.maxLength - 1])
-
-  if firstChar == secondChar {
-    return false
-  }
-  return firstChar == p.letter || secondChar == p.letter
-}
-
 func part1(passwords []password) int {
-  return utils.Count[password](passwords, isPasswordValidPart1)
+  return utils.Count[password](passwords, func (p password) bool {
+    nbLetter := strings.Count(p.value, p.letter)
+    return nbLetter >= p.minLength && nbLetter <= p.maxLength
+  })
 }
 
 func part2(passwords []password) int {
-  return utils.Count[password](passwords, isPasswordValidPart2)
+  return utils.Count[password](passwords, func (p password) bool {
+    firstChar := string(p.value[p.minLength - 1])
+    secondChar := string(p.value[p.maxLength - 1])
+
+    if firstChar == secondChar {
+      return false
+    }
+    return firstChar == p.letter || secondChar == p.letter
+  })
 }
 
 func main() {
