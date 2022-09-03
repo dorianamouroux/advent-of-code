@@ -8,26 +8,27 @@ import (
 )
 
 func ReadInput() ([]string, error) {
-  input := flag.String("input", "", "The path of the input file")
+  file, errFile := ReadFileInput()
+  if errFile != nil {
+    return nil, errFile
+  }
+
+  return FileToLines(string(file)), nil
+}
+
+func ReadFileInput() ([]byte, error) {
+  path := flag.String("input", "", "The path of the input file")
 
   flag.Parse()
 
-  if *input == "" {
+  if *path == "" {
     return nil, errors.New("Please give -input=path")
   }
 
-  return readFile(*input)
+  return os.ReadFile(*path)
 }
 
-func readFile(path string) ([]string, error) {
-  data, err := os.ReadFile(path)
-  if err != nil {
-    return nil, err
-  }
-  return bytesToLineString(data), nil
-}
-
-func bytesToLineString(str []byte) ([]string) {
+func FileToLines(str string) ([]string) {
   lines := strings.Split(string(str), "\n")
   return Filter[string](lines, func (s string)bool {
     return !isEmpty(s)

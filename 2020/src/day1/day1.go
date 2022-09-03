@@ -40,6 +40,6 @@ func main() {
     return
   }
   data := utils.AtoiSlice(file)
-  fmt.Println("part1 = ", part1(data))
-  fmt.Println("part2 = ", part2(data))
+  fmt.Println("part1 =", part1(data))
+  fmt.Println("part2 =", part2(data))
 }
