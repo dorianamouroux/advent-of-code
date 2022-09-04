@@ -6,9 +6,16 @@ import (
   "io/ioutil"
 )
 
-func Assert(t *testing.T, expected string, value string) {
+func Assert(t *testing.T, expected interface{}, value interface{}) {
   if expected != value {
-    t.Errorf("Error = %s; want %s", expected, value)
+    _, isString := expected.(string)
+    _, isBool := expected.(bool)
+    if isString {
+      t.Errorf("Error = %s; want %s", expected, value)
+    }
+    if isBool {
+      t.Errorf("Error = %t; want %t", expected, value)
+    }
   }
 }
 

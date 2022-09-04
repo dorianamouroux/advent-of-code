@@ -1,6 +1,6 @@
 package utils
 
-func HasKey(data map[string]interface{}, keys ...string) bool {
+func HasKey[V interface{}](data map[string]V, keys ...string) bool {
   for _, key := range keys {
     _, isInMap := data[key]
     if !isInMap {
