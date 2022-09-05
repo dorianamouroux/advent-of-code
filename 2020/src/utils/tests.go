@@ -10,11 +10,15 @@ func Assert(t *testing.T, expected interface{}, value interface{}) {
   if expected != value {
     _, isString := expected.(string)
     _, isBool := expected.(bool)
+    _, isInt := expected.(int)
     if isString {
       t.Errorf("Error = %s; want %s", expected, value)
     }
     if isBool {
       t.Errorf("Error = %t; want %t", expected, value)
+    }
+    if isInt {
+      t.Errorf("Error = %d; want %d", expected, value)
     }
   }
 }

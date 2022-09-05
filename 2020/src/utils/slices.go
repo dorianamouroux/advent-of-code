@@ -33,3 +33,15 @@ func Count[Item interface{}](list []Item, fn func(Item)bool) int {
 
   return count
 }
+
+func Max(list []int)int {
+  max := list[0]
+
+  for i := 1; i < len(list); i++ {
+    if list[i] > max {
+      max = list[i]
+    }
+  }
+
+  return max
+}
