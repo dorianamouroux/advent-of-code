@@ -45,3 +45,11 @@ func Max(list []int)int {
 
   return max
 }
+
+func Sum(list []int)int {
+  total := 0
+  for _, nb := range list {
+    total += nb
+  }
+  return total
+}
