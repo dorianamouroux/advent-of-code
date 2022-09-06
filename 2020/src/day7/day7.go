@@ -6,13 +6,7 @@ import (
 
   "github.com/dorianamouroux/advent-of-code/src/utils"
 )
-
-type capacity struct {
-  name string
-  count int
-}
-
-type graph map[string][]capacity
+type graph map[string]map[string]int
 
 func parse(lines []string) graph {
   var bags = make(graph)
@@ -23,24 +17,22 @@ func parse(lines []string) graph {
     capacities = utils.Filter(capacities, func (capacity string)bool {
       return capacity != "no other bags"
     })
-    bags[name] = utils.Map(capacities, func (c string)capacity {
-      count := utils.AtoiSimple(string(c[0]))
-      c = strings.Trim(c[1:], " ")
-      bagName := strings.ReplaceAll(c, " bags", "")
+    bags[name] = make(map[string]int)
+    for _, capacity := range capacities {
+      count := utils.AtoiSimple(string(capacity[0]))
+      bagName := strings.Trim(capacity[1:], " ")
+      bagName = strings.ReplaceAll(bagName, " bags", "")
       bagName = strings.ReplaceAll(bagName, " bag", "")
-      return capacity{name:bagName, count:count}
-    })
+      bags[name][bagName] = count
+    }
   }
 
   return bags
 }
 
 func canContainBag(bags graph, bagName string, toFind string)bool {
-  for _, bagToCheck := range bags[bagName] {
-    if bagToCheck.name == toFind {
-      return true
-    }
-    if canContainBag(bags, bagToCheck.name, toFind) {
+  for bagToCheck, _ := range bags[bagName] {
+    if bagToCheck == toFind || canContainBag(bags, bagToCheck, toFind) {
       return true
     }
   }
@@ -60,8 +52,8 @@ func part1(bags graph, toFind string) int {
 
 func sumNbBag(bags graph, bagToCount string) int {
   nbBag := 1
-  for _, contains := range bags[bagToCount] {
-    nbBag += contains.count * sumNbBag(bags, contains.name)
+  for bagName, count := range bags[bagToCount] {
+    nbBag += count * sumNbBag(bags, bagName)
   }
   return nbBag
 }
