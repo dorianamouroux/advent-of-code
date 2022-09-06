@@ -53,3 +53,12 @@ func Sum(list []int)int {
   }
   return total
 }
+
+func Exist(list []string, toFind string)bool {
+  for _, item := range list {
+    if item == toFind {
+      return true
+    }
+  }
+  return false
+}
