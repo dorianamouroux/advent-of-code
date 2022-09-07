@@ -46,6 +46,18 @@ func Max(list []int)int {
   return max
 }
 
+func Min(list []int)int {
+  min := list[0]
+
+  for i := 1; i < len(list); i++ {
+    if list[i] < min {
+      min = list[i]
+    }
+  }
+
+  return min
+}
+
 func Sum(list []int)int {
   total := 0
   for _, nb := range list {
