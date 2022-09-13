@@ -13,12 +13,6 @@ type room struct {
   data []string
 }
 
-func toRoom(lines []string)room {
-  width := len(lines[0])
-  height := len(lines)
-  return room{width: width, height: height, data: lines}
-}
-
 func (r room) is_in_room(x int, y int)bool {
   return x >= 0 && y >= 0 && x < r.width && y < r.height
 }
@@ -108,7 +102,7 @@ func part2(r room) int {
 
 func main() {
   file, errFile := utils.ReadInput()
-  room := toRoom(file)
+  room := room{width: len(lines[0]), height: len(lines), data: file}
   if errFile != nil {
     fmt.Println(errFile)
     return
