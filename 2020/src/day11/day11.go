@@ -101,12 +101,8 @@ func part2(r room) int {
 }
 
 func main() {
-  file, errFile := utils.ReadInput()
-  room := room{width: len(lines[0]), height: len(lines), data: file}
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadInput()
+  room := room{width: len(file[0]), height: len(file), data: file}
   fmt.Println("part1 =", part1(room))
   fmt.Println("part2 =", part2(room))
 }

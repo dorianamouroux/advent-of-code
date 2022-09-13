@@ -33,11 +33,7 @@ func part2(terrain [][]string) int {
 }
 
 func main() {
-  file, errFile := utils.ReadInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadInput()
   terrain := utils.Map[string, []string](file, func (s string) []string {
     return strings.Split(s, "")
   })

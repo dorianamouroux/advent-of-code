@@ -61,11 +61,7 @@ func part2(numbers []int) int {
 }
 
 func main() {
-  file, errFile := utils.ReadInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadInput()
   numbers := utils.Map(file, utils.AtoiSimple)
   fmt.Println("part1 =", part1(numbers))
   fmt.Println("part2 =", part2(numbers))

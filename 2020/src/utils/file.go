@@ -2,30 +2,33 @@ package utils
 
 import (
   "os"
+  "fmt"
   "strings"
   "flag"
-  "errors"
 )
 
-func ReadInput() ([]string, error) {
-  file, errFile := ReadFileInput()
-  if errFile != nil {
-    return nil, errFile
-  }
+func ReadInput() ([]string) {
+  file := ReadFileInput()
 
-  return FileToLines(string(file)), nil
+  return FileToLines(string(file))
 }
 
-func ReadFileInput() ([]byte, error) {
+func ReadFileInput() ([]byte) {
   path := flag.String("input", "", "The path of the input file")
 
   flag.Parse()
 
   if *path == "" {
-    return nil, errors.New("Please give -input=path")
+    fmt.Println("Please give -input=path")
+    os.Exit(1)
   }
 
-  return os.ReadFile(*path)
+  file, errFile := os.ReadFile(*path)
+  if errFile != nil {
+    fmt.Println(errFile)
+    os.Exit(1)
+  }
+  return file
 }
 
 func FileToLines(str string) ([]string) {

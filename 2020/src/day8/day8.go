@@ -63,11 +63,7 @@ func part2(instructions []*instruction) int {
 }
 
 func main() {
-  file, errFile := utils.ReadInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadInput()
   instructions := utils.Map(file, func (line string)*instruction {
     name, value, _ := strings.Cut(line, " ")
     return &instruction{name: name, value: utils.AtoiSimple(value), wasRan: false}

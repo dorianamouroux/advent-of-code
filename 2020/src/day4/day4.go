@@ -77,11 +77,7 @@ func part2(passports []passport) int {
 }
 
 func main() {
-  file, errFile := utils.ReadFileInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadFileInput()
   inputs := strings.Split(string(file), "\n\n")
   passports := utils.Map[string, passport](inputs, parseItem)
   fmt.Println("part1 =", part1(passports))

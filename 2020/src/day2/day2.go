@@ -50,11 +50,7 @@ func part2(passwords []password) int {
 }
 
 func main() {
-  lines, errFile := utils.ReadInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  lines := utils.ReadInput()
   data := utils.Map[string, password](lines, parseItem)
   fmt.Println("part1 =", part1(data))
   fmt.Println("part2 =", part2(data))

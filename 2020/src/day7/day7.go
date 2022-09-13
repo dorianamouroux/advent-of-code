@@ -63,11 +63,7 @@ func part2(bags graph, bagToCount string) int {
 }
 
 func main() {
-  file, errFile := utils.ReadInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadInput()
   bags := parse(file)
   fmt.Println("part1 =", part1(bags, "shiny gold"))
   fmt.Println("part2 =", part2(bags, "shiny gold"))

@@ -52,11 +52,7 @@ func part2(answerPerGroup []map[string]int) int {
 }
 
 func main() {
-  file, errFile := utils.ReadFileInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadFileInput()
   inputs := strings.Split(string(file), "\n\n")
   answerPerGroup := utils.Map(inputs, getAnswersCount)
   fmt.Println("part1 =", part1(answerPerGroup))

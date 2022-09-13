@@ -37,11 +37,7 @@ func part2(seatIds []int) int {
 }
 
 func main() {
-  file, errFile := utils.ReadInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadInput()
   seatIds := utils.Map(file, decode)
   fmt.Println("part1 =", part1(seatIds))
   fmt.Println("part2 =", part2(seatIds))

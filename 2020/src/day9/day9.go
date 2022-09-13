@@ -45,11 +45,7 @@ func part2(numbers []int, wrongNumber int) int {
 }
 
 func main() {
-  file, errFile := utils.ReadInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadInput()
   fileInts := utils.Map(file, utils.AtoiSimple)
   resPart1 := part1(fileInts, 25)
   fmt.Println("part1 =", resPart1)

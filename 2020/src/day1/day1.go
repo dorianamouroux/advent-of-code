@@ -34,11 +34,7 @@ func part2(lines []int) int {
 }
 
 func main() {
-  file, errFile := utils.ReadInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadInput()
   data := utils.AtoiSlice(file)
   fmt.Println("part1 =", part1(data))
   fmt.Println("part2 =", part2(data))
