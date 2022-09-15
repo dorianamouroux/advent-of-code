@@ -1,5 +1,15 @@
 package utils
 
+func FindIndex[Item interface{ comparable }](list []Item, toFind Item) int {
+  for index, item := range list {
+    if item == toFind {
+      return index
+    }
+  }
+
+  return -1
+}
+
 func Filter[Item interface{}](list []Item, fn func(Item)bool) []Item {
   var newList []Item
 

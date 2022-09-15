@@ -15,11 +15,7 @@ func part2(_ []string) int {
 }
 
 func main() {
-  file, errFile := utils.ReadInput()
-  if errFile != nil {
-    fmt.Println(errFile)
-    return
-  }
+  file := utils.ReadInput()
   fmt.Println("part1 =", part1(file))
   fmt.Println("part2 =", part2(file))
 }
