@@ -25,16 +25,6 @@ fn get_winning_shape(shape: &Shape) -> Shape {
         ]).get(shape).copied().unwrap()
 }
 
-fn get_nb_point_for_round(left: &Shape, right: &Shape) -> i32 {
-    if left == right {
-        return 3;
-    }
-    if get_losing_shape(right) == *left {
-        return 6;
-    }
-    return 0;
-}
-
 fn get_point_of_shape(shape: &Shape) -> i32 {
     let point_per_move = HashMap::from([
         (Shape::Rock, 1),
@@ -54,8 +44,13 @@ fn part1(input: &Vec<(Shape, char)>) -> i32 {
             'Z' => Shape::Cisor,
             _ => panic!("not good input")
         };
+        if *left == move_right {
+            score += 3;
+        }
+        if get_losing_shape(&move_right) == *left {
+            score += 6;
+        }
 
-        score += get_nb_point_for_round(left, &move_right);
         score += get_point_of_shape(&move_right);
     }
 
