@@ -17,19 +17,16 @@ fn move_head(direction: &str, pos_head: &(i32, i32)) -> (i32, i32) {
 }
 
 fn move_tail(pos_head: &(i32, i32), pos_tail: &(i32, i32)) -> (i32, i32) {
-    if pos_head.0 == pos_tail.0 { // same line
-        let new_y = if pos_head.1 - pos_tail.1 > 0 { pos_head.1 - 1 } else { pos_head.1 + 1};
-        (pos_head.0, new_y)
-    } else if pos_head.1 == pos_tail.1 { // same column
-        let new_x = if pos_head.0 - pos_tail.0 > 0 { pos_head.0 - 1 } else { pos_head.0 + 1};
-        (new_x, pos_head.1)
-    } else if (pos_head.0 - pos_tail.0).abs() == 2 { // diagonal but 2 in x, 1 in y
-        let new_x = if pos_head.0 - pos_tail.0 > 0 { pos_head.0 - 1 } else { pos_head.0 + 1};
-        (new_x, pos_head.1)
-    }
-    else { // diagonal but 2 in y, 1 in x
-        let new_y = if pos_head.1 - pos_tail.1 > 0 { pos_head.1 - 1 } else { pos_head.1 + 1};
-        (pos_head.0, new_y)
+    if pos_head.0 == pos_tail.0 { // same column
+        let new_y = if pos_head.1 > pos_tail.1 { pos_tail.1 + 1 } else { pos_tail.1 - 1};
+        (pos_tail.0, new_y)
+    } else if pos_head.1 == pos_tail.1 { // same line
+        let new_x = if pos_head.0 > pos_tail.0 { pos_tail.0 + 1 } else { pos_tail.0 - 1};
+        (new_x, pos_tail.1)
+    } else {
+        let new_x = if pos_head.0 > pos_tail.0 { pos_tail.0 + 1 } else { pos_tail.0 - 1};
+        let new_y = if pos_head.1 > pos_tail.1 { pos_tail.1 + 1 } else { pos_tail.1 - 1};
+        (new_x, new_y)
     }
 }
 
