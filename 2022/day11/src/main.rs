@@ -1,4 +1,3 @@
-use std::cell::RefCell;
 use itertools::Itertools;
 
 #[macro_use] extern crate scan_fmt;
@@ -7,7 +6,7 @@ extern crate my_lib;
 
 #[derive(Debug, Clone)]
 struct Monkey {
-    items: RefCell<Vec<usize>>,
+    items: Vec<usize>,
     left_operand: Option<usize>,
     right_operand: Option<usize>,
     operator: String,
@@ -35,15 +34,15 @@ fn do_math(monkey: &Monkey, value: usize) -> usize {
 
 fn execute_one_cycle(monkeys: &mut Vec<Monkey>, divide_by: usize, magic_number: usize) {
     for i in 0..monkeys.len() {
-        let nb_item: usize = monkeys[i].items.borrow().len();
+        let nb_item: usize = monkeys[i].items.len();
         for j in 0..nb_item {
             let monkey = &monkeys[i];
-            let value = do_math(monkey, monkey.items.borrow()[j]) / divide_by % magic_number;
+            let value = do_math(monkey, monkey.items[j]) / divide_by % magic_number;
             let to_which_monkey = if value % monkeys[i].test_divisible == 0 { monkey.if_true } else { monkey.if_false };
-            monkeys[to_which_monkey].items.borrow_mut().push(value);
+            monkeys[to_which_monkey].items.push(value);
             monkeys[i].nb_item_inspected += 1;
         }
-        monkeys[i].items = RefCell::new(vec![]);
+        monkeys[i].items = vec![];
     }
 }
 
@@ -93,7 +92,7 @@ fn parse(filename: &str) -> Vec<Monkey> {
         let right_operand = if raw_right_operand == "old" { None } else { Some(raw_right_operand.parse::<usize>().unwrap()) };
 
         Monkey {
-            items: RefCell::new(items),
+            items: items,
             left_operand,
             right_operand,
             operator: operator,
