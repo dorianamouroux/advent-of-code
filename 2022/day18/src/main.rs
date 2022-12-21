@@ -64,6 +64,7 @@ fn part2(lava_cubes: &Vec<Cube>) -> i32 {
             if lava_cubes.contains(&n) {
                 return true;
             }
+            // if not a known air cube, then it's probably a void air cube
             !air_cubes.contains(&n)
         }).count();
         6 - nb_adjacent_cubes as i32
