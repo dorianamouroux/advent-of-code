@@ -1,9 +1,7 @@
 def part_1(file)
   numbers = file.readlines.map { |line|
-    number = line.delete("^0-9")
-    first_char = number[0]
-    last_char = number[-1]
-    "#{first_char}#{last_char}".to_i
+    number = line.delete("^0-9").split("")
+    "#{number.first}#{number.last}".to_i
   }
 
   numbers.sum
