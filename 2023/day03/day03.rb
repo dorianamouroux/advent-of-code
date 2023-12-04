@@ -18,29 +18,36 @@ class Map
     end
   end
 
+  def clear_all_numbers
+    numbers = []
+
+    (0..height()).each {|y|
+      (0..width()).each {|x|
+        symbol = at(x, y)
+        if symbol and not symbol.match?(/[0-9\.]/)
+          numbers.push(clear_numbers_around(x, y))
+        end
+      }
+    }
+
+    numbers.compact
+  end
+
+  def adjacent_cells(from_x, from_y)
+    ((from_y-1)..(from_y+1)).map{|y|
+      ((from_x-1)..(from_x+1)).map{|x|
+          unless x == from_x and y == from_y
+            [x, y]
+          end
+        }
+      }.flatten(1).compact
+  end
+
   def clear_numbers_around(x, y)
-    symbol = at(x, y)
+    removed_numbers = adjacent_cells(x, y).map {|x, y| clear_number(x, y)}.compact
 
-    removed = [
-      # top line
-      clear_number(x - 1, y - 1),
-      clear_number(x, y - 1),
-      clear_number(x + 1, y - 1),
-
-      # left and right,
-      clear_number(x - 1, y),
-      clear_number(x + 1, y),
-
-      # bottom line
-      clear_number(x - 1, y + 1),
-      clear_number(x, y + 1),
-      clear_number(x + 1, y + 1),
-    ].compact
-
-    if symbol == "*" and removed.length == 2
-      removed[0] * removed[1]
-    else
-      0
+    if at(x, y) == "*" and removed_numbers.length == 2
+      removed_numbers[0] * removed_numbers[1]
     end
   end
 
@@ -95,43 +102,16 @@ end
 def part_1(file)
   map = Map.new(file)
 
-  all_numbers = map.find_numbers
+  all_numbers = map.find_numbers.sum
+  map.clear_all_numbers
+  not_part_numbers = map.find_numbers.sum
 
-  (0..map.height).each {|y|
-    (0..map.width).each {|x|
-      symbol = map.at(x, y)
-      if symbol and not symbol.match?(/[0-9\.]/)
-        map.clear_numbers_around(x, y)
-      end
-    }
-  }
-
-  not_part_numbers = map.find_numbers
-
-  all_numbers.select{|number|
-    if not_part_numbers.include?(number)
-      not_part_numbers.delete_at(not_part_numbers.index(number))
-      false
-    else
-      true
-    end
-  }.sum
+  all_numbers - not_part_numbers
 end
 
 def part_2(file)
   map = Map.new(file)
-  numbers = []
-
-  (0..map.height).each {|y|
-    (0..map.width).each {|x|
-      symbol = map.at(x, y)
-      if symbol and not symbol.match?(/[0-9\.]/)
-        numbers.push(map.clear_numbers_around(x, y))
-      end
-    }
-  }
-
-  numbers.sum
+  map.clear_all_numbers.sum
 end
 
 puts "part 1 example = #{part_1(File.open("example.txt"))}"
