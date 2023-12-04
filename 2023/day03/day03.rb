@@ -4,16 +4,8 @@ class Map
      @data = file.readlines.map {|line| line.strip!.split("")}
   end
 
-  def width
-    @data[0].length
-  end
-
-  def height
-    @data.length
-  end
-
   def at(x, y)
-    unless x < 0 or x >= width() or y < 0 or y >= height()
+    unless x < 0 or x >= @data[0].length or y < 0 or y >= @data.length
       @data[y][x]
     end
   end
@@ -21,8 +13,8 @@ class Map
   def clear_all_numbers
     numbers = []
 
-    (0..height()).each {|y|
-      (0..width()).each {|x|
+    (0..@data.length).each {|y|
+      (0..@data[0].length).each {|x|
         symbol = at(x, y)
         if symbol and not symbol.match?(/[0-9\.]/)
           numbers.push(clear_numbers_around(x, y))
@@ -58,38 +50,31 @@ class Map
       return
     end
 
+    # Otherwise, replace number with "." and return it
     number = [symbol]
+    @data[y][from_x] = "."
 
     # remove right to left
     x = from_x - 1
-    symbol = at(x, y)
-    while symbol != nil and symbol.match?(/[0-9]/)
+    loop do
+      symbol = at(x, y)
+      break if symbol == nil or not symbol.match?(/[0-9]/)
       number.prepend(symbol)
       @data[y][x] = "."
       x -= 1
-      symbol = at(x, y)
     end
 
-    # remove left to rihht
+    # remove left to right
     x = from_x + 1
-    symbol = at(x, y)
-    while symbol != nil and symbol.match?(/[0-9]/)
+    loop do
+      symbol = at(x, y)
+      break if symbol == nil or not symbol.match?(/[0-9]/)
       number.push(symbol)
       @data[y][x] = "."
       x += 1
-      symbol = at(x, y)
     end
 
-    # clear current cell
-    @data[y][from_x] = "."
-
     number.join("").to_i
-  end
-
-  def print
-    @data.each{|line|
-      puts line.join("").to_s
-    }
   end
 
   def find_numbers
