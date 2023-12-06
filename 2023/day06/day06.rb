@@ -1,6 +1,5 @@
 def nb_victory(round)
   time, distance = round
-  found_winning = false
 
   (0..time).count {|i|
     distance_with_time = (time - i) * i
@@ -20,6 +19,7 @@ def part_2(file) # take 1~2 seconds but I'm happy with it
   time, distance = file.readlines
   time = time.scan(/(\d+)/).flatten.compact.join("").to_i
   distance = distance.scan(/(\d+)/).flatten.compact.join("").to_i
+
   nb_victory([time, distance])
 end
 
