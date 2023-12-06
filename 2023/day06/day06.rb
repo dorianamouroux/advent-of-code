@@ -9,11 +9,11 @@ def nb_victory(round)
 end
 
 def part_1(file)
-  time, distance = file.readlines
-  time = time.scan(/(\d+)/).flatten.compact.map{|n| n.to_i}
-  distance = distance.scan(/(\d+)/).flatten.compact.map{|n| n.to_i}
+  times, distances = file.readlines
+  times = times.scan(/(\d+)/).flatten.compact.map{|n| n.to_i}
+  distances = distances.scan(/(\d+)/).flatten.compact.map{|n| n.to_i}
 
-  time.zip(distance).map{|round| nb_victory(round)}.inject(:*)
+  times.zip(distances).map{|round| nb_victory(round)}.inject(:*)
 end
 
 def part_2(file) # take 1~2 seconds but I'm happy with it
