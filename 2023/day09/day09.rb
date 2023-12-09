@@ -17,16 +17,6 @@ def compute_next_elem(number_suite)
   all_suites.first.last
 end
 
-def compute_prev_elem(number_suite)
-  previous_number = 0
-  all_suites = build_all_suites(number_suite)
-  all_suites.reverse.each {|suite|
-    suite.unshift(suite.first - previous_number)
-    previous_number = suite.first
-  }
-  all_suites.first.first
-end
-
 def part_1(file)
   file.readlines.map{|line|
     number_suite = line.strip!.split(" ").map(&:to_i)
@@ -36,8 +26,8 @@ end
 
 def part_2(file)
   file.readlines.map{|line|
-    number_suite = line.strip!.split(" ").map(&:to_i)
-    compute_prev_elem(number_suite)
+    number_suite = line.strip!.split(" ").map(&:to_i).reverse
+    compute_next_elem(number_suite)
   }.sum
 end
 
