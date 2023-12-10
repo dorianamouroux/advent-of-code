@@ -1,15 +1,6 @@
-class Map
-  @@data = []
-  def initialize(file)
-     @data = file.readlines.map {|line| line.strip!.split("")}
-  end
+require '../utils'
 
-  def at(x, y)
-    unless x < 0 or x >= @data[0].length or y < 0 or y >= @data.length
-      @data[y][x]
-    end
-  end
-
+class Map < TwoDimMap
   def clear_all_numbers
     numbers = []
 
@@ -25,18 +16,8 @@ class Map
     numbers.compact
   end
 
-  def adjacent_cells(from_x, from_y)
-    ((from_y-1)..(from_y+1)).map{|y|
-      ((from_x-1)..(from_x+1)).map{|x|
-          unless x == from_x and y == from_y
-            [x, y]
-          end
-        }
-      }.flatten(1).compact
-  end
-
   def clear_numbers_around(x, y)
-    removed_numbers = adjacent_cells(x, y).map {|x, y| clear_number(x, y)}.compact
+    removed_numbers = all_adjacent_cells(x, y).map {|x, y| clear_number(x, y)}.compact
 
     if at(x, y) == "*" and removed_numbers.length == 2
       removed_numbers[0] * removed_numbers[1]
