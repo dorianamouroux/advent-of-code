@@ -31,4 +31,18 @@ class TwoDimMap
   def all_adjacent_cells(from_x, from_y)
     edge_adjacent_cells(from_x, from_y) + diag_adjacent_cells(from_x, from_y)
   end
+
+  def find(symbol)
+    each_cell.find {|x, y| symbol == at(x, y)}
+  end
+
+  def each_cell
+    return to_enum(__method__) unless block_given?
+
+    (0..@data.length).each {|y|
+      (0..@data[0].length).each {|x|
+        yield [x, y]
+      }
+    }
+  end
 end

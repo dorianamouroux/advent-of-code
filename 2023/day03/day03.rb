@@ -80,7 +80,7 @@ def part_2(file)
   map.clear_all_numbers.sum
 end
 
-puts "part 1 example = #{part_1(File.open("example.txt"))}"
-puts "part 1 input = #{part_1(File.open("input.txt"))}"
-puts "part 2 example = #{part_2(File.open("example.txt"))}"
-puts "part 2 input = #{part_2(File.open("input.txt"))}"
+puts "part 1 example = #{part_1(File.open("example.txt"))}" # 4361
+puts "part 1 input = #{part_1(File.open("input.txt"))}" # 551094
+puts "part 2 example = #{part_2(File.open("example.txt"))}" # 467835
+puts "part 2 input = #{part_2(File.open("input.txt"))}" # 80179647
