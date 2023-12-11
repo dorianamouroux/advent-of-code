@@ -8,61 +8,58 @@ $connections = Hash[
   [0, 1] => ["|", "J", "L", "S"], # bottom
 ]
 
-class AnimalField < TwoDimMap
+def can_connect(map, current_pos, target_cell, modifier)
+  current_symbol = map.at(current_pos[0], current_pos[1])
+  target_symbol = map.at(target_cell[0], target_cell[1])
+  reverse_modifier = [modifier[0] * -1, modifier[1] * -1]
 
-  def can_connect(current_pos, target_cell, modifier)
-    current_symbol = self.at(current_pos[0], current_pos[1])
-    target_symbol = self.at(target_cell[0], target_cell[1])
-    reverse_modifier = [modifier[0] * -1, modifier[1] * -1]
+  current_to_target = $connections[modifier].include?(target_symbol)
+  target_to_current = $connections[reverse_modifier].include?(current_symbol)
 
-    current_to_target = $connections[modifier].include?(target_symbol)
-    target_to_current = $connections[reverse_modifier].include?(current_symbol)
+  current_to_target and target_to_current
+end
 
-    current_to_target and target_to_current
-  end
+def find_next_connection(map, paths, current)
+  $connections.keys.each{|modifier|
+    cell = [current[0] + modifier[0], current[1] + modifier[1]]
 
-  def find_next_connection(paths, current)
-    $connections.keys.each{|modifier|
-      cell = [current[0] + modifier[0], current[1] + modifier[1]]
-
-      if self.can_connect(current, cell, modifier) and not paths.include?(cell)
-        return cell
-      end
-    }
-    return nil
-  end
-
-  def build_loop
-    paths = Set[]
-    next_connection = self.find("S")
-    while next_connection do
-      paths.add(next_connection)
-      next_connection = find_next_connection(paths, next_connection)
+    if can_connect(map, current, cell, modifier) and not paths.include?(cell)
+      return cell
     end
-    return paths
+  }
+  return nil
+end
+
+def build_loop(map)
+  paths = Set[]
+  next_connection = map.find("S")
+  while next_connection do
+    paths.add(next_connection)
+    next_connection = find_next_connection(map, paths, next_connection)
   end
+  return paths
 end
 
 def part_1(file)
-  map = AnimalField.new(file)
-  paths = map.build_loop()
+  map = TwoDimMap.new(file)
+  paths = build_loop(map)
 
   (paths.length / 2).floor
 end
 
 def part_2(file)
-  map = AnimalField.new(file)
-  paths = map.build_loop()
+  map = TwoDimMap.new(file)
+  paths = build_loop(map)
   is_inside = false
   map.each_cell.count {|cell|
-    x, y = cell
-    symbol = map.at(x, y)
-    is_in_path = paths.include?([x, y])
-    if ["S", "|", "J", "L"].include?(symbol) and is_in_path
+    symbol = map.at(cell[0], cell[1])
+    is_in_loop = paths.include?(cell)
+
+    if ["S", "|", "J", "L"].include?(symbol) and is_in_loop
       is_inside = !is_inside
     end
 
-    is_inside and not is_in_path
+    is_inside and not is_in_loop
   }
 end
 
