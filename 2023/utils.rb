@@ -10,6 +10,14 @@ class TwoDimMap
     end
   end
 
+  def lines
+    @data.map{|line| line}
+  end
+
+  def columns
+    (0..@data[0].length - 1).map {|x| lines.map{|line| line[x]}}
+  end
+
   def edge_adjacent_cells(from_x, from_y)
     [
       [from_x, from_y - 1],
