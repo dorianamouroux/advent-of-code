@@ -1,7 +1,7 @@
 class TwoDimMap
   @@data = []
-  def initialize(file)
-     @data = file.readlines.map {|line| line.strip!.split("")}
+  def initialize(lines)
+     @data = lines.map {|line| line.strip.split("")}
   end
 
   def at(x, y)
