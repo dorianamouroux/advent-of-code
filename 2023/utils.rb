@@ -10,6 +10,11 @@ class TwoDimMap
     end
   end
 
+  def set(x, y, symbol)
+    line = @data[y]
+    line[x] = symbol
+  end
+
   def lines
     @data.map{|line| line}
   end
@@ -51,6 +56,12 @@ class TwoDimMap
       (0..@data[0].length).each {|x|
         yield [x, y]
       }
+    }
+  end
+
+  def print
+    lines.each {|line|
+      puts line.join("")
     }
   end
 end
