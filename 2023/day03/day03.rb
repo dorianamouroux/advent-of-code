@@ -66,7 +66,7 @@ class Map < TwoDimMap
 end
 
 def part_1(file)
-  map = Map.new(file)
+  map = Map.new(file.readlines)
 
   all_numbers = map.find_numbers.sum
   map.clear_all_numbers
@@ -76,7 +76,7 @@ def part_1(file)
 end
 
 def part_2(file)
-  map = Map.new(file)
+  map = Map.new(file.readlines)
   map.clear_all_numbers.sum
 end
 

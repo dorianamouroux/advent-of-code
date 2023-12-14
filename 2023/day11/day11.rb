@@ -22,7 +22,7 @@ def count_distance(gap_columns, gap_lines, galaxy_a, galaxy_b, gap_size)
 end
 
 def compute_all_distance(file, gap)
-  map = TwoDimMap.new(file)
+  map = TwoDimMap.new(file.readlines)
 
   gap_columns = get_gapped_lines(map.columns)
   gap_lines = get_gapped_lines(map.lines)

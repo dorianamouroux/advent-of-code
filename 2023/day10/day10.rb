@@ -41,14 +41,14 @@ def build_loop(map)
 end
 
 def part_1(file)
-  map = TwoDimMap.new(file)
+  map = TwoDimMap.new(file.readlines)
   paths = build_loop(map)
 
   (paths.length / 2).floor
 end
 
 def part_2(file)
-  map = TwoDimMap.new(file)
+  map = TwoDimMap.new(file.readlines)
   paths = build_loop(map)
   is_inside = false
   map.each_cell.count {|cell|
