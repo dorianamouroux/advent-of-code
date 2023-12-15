@@ -16,7 +16,7 @@ def shift_rock(map, rock, direction)
       rock = [next_x, next_y]
     else
       map.set(rock[0], rock[1], "O")
-      return
+      return rock
     end
   end
 end
@@ -28,19 +28,28 @@ def compute_support_north(map)
   }.sum
 end
 
-def get_all_rocks(map, direction)
+def compute_support_north_bis(lines)
+  lines.reverse.each_with_index.map {|line, index|
+    nb_rocks = line.count {|cell| cell == "O" }
+    nb_rocks * (index + 1)
+  }.sum
+end
+
+def get_all_rocks(map)
   all_rocks = map.each_cell.select {|x, y| map.at(x, y) == "O"}
-  all_rocks.sort_by{|x, y| (x * direction[0] * -1) + (y * direction[1] * -1)}
 end
 
 def get_size_cycle(map)
   cache = Hash.new
   start_cycle = 0
   size_cycle = 0
+  rocks = get_all_rocks(map)
 
   (0..1000000000).each{|i|
     [$north, $west, $south, $east].each {|direction|
-      get_all_rocks(map, direction).each{|rock| shift_rock(map, rock, direction)}
+      rocks = rocks
+        .sort_by{|x, y| (x * direction[0] * -1) + (y * direction[1] * -1)}
+        .map{|rock| shift_rock(map, rock, direction)}
     }
     key = map.lines.to_s
     if cache.has_key?(key)
@@ -61,7 +70,9 @@ end
 
 def part_1(file)
   map = TwoDimMap.new(file.readlines)
-  get_all_rocks(map, $north).each{|rock| shift_rock(map, rock, $north)}
+  get_all_rocks(map)
+    .sort_by{|x, y| (x * $north[0] * -1) + (y * $north[1] * -1)}
+    .each{|rock| shift_rock(map, rock, $north)}
 
   compute_support_north(map)
 end
@@ -76,9 +87,13 @@ def part_2(file)
 
   # Not very optimal, but we run again the same amount of steps on a fresh map to get the results
   map = TwoDimMap.new(original_file.clone())
+  rocks = get_all_rocks(map)
+
   (0..index).each{
     [$north, $west, $south, $east].each {|direction|
-      get_all_rocks(map, direction).each{|rock| shift_rock(map, rock, direction)}
+      rocks = rocks
+        .sort_by{|x, y| (x * direction[0] * -1) + (y * direction[1] * -1)}
+        .map{|rock| shift_rock(map, rock, direction)}
     }
   }
 
