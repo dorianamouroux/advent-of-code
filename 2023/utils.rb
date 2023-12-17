@@ -1,7 +1,17 @@
 class TwoDimMap
   @@data = []
-  def initialize(lines)
-     @data = lines.map {|line| line.strip.split("")}
+  def initialize(lines, cell_class = String)
+     @data = lines.map {|line|
+       line.strip.split("").map{|char| cell_class.new(char)}
+     }
+  end
+
+  def height
+    @data.length
+  end
+
+  def width
+    @data.first.length
   end
 
   def at(x, y)
@@ -59,9 +69,13 @@ class TwoDimMap
     }
   end
 
+  def to_s
+    lines.map {|line|
+      line.map{|cell| cell.to_s}.join("")
+    }.join("\n")
+  end
+
   def print
-    lines.each {|line|
-      puts line.join("")
-    }
+    puts self.to_s
   end
 end
