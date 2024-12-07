@@ -36,7 +36,7 @@ defmodule Aoc.Day06 do
     |> move_until_out()
     |> pos_visited() # only add obstacles on the paths of the original circuit
     |> Enum.reject(& &1 == initial_context.current_pos)
-    |> Enum.count(fn {x, y} ->
+    |> Task.async_stream(fn {x, y} ->
       updated_map = Aoc.Map.put(initial_context.map, x, y, "#")
 
       outcome = initial_context
@@ -46,6 +46,7 @@ defmodule Aoc.Day06 do
 
       outcome == :loop
     end)
+    |> Enum.count(fn {:ok, result} -> result end)
     |> IO.inspect(label: path)
   end
 
