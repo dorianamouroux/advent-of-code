@@ -25,8 +25,23 @@ defmodule Aoc.Map do
     Map.get(map.data, {x, y})
   end
 
+  def put(map, x, y, char) do
+    data = Map.put(map.data, {x, y}, char)
+    Map.put(map, :data, data)
+  end
+
   def all_cells(map) do
     map.data
+  end
+
+  def find(map, char_to_find) do
+    map
+    |> all_cells()
+    |> Enum.find_value(fn {pos, char} ->
+      if char == char_to_find do
+        pos
+      end
+    end)
   end
 
   def get_directions() do
