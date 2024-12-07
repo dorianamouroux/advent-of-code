@@ -34,7 +34,7 @@ defmodule Aoc.Day06 do
 
     initial_context
     |> move_until_out()
-    |> pos_visited()
+    |> pos_visited() # only add obstacles on the paths of the original circuit
     |> Enum.reject(& &1 == initial_context.current_pos)
     |> Enum.count(fn {x, y} ->
       updated_map = Aoc.Map.put(initial_context.map, x, y, "#")
