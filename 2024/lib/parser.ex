@@ -3,6 +3,12 @@ defmodule Aoc.Parser do
     File.read!(path)
   end
 
+  def two_chunks(path) do
+    path
+    |> File.read!()
+    |> String.split("\n\n")
+  end
+
   def numbers_on_lines(path) do
     path
     |> File.stream!()
