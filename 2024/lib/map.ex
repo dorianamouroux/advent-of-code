@@ -25,6 +25,15 @@ defmodule Aoc.Map do
     Map.get(map.data, {x, y})
   end
 
+  def print(map) do
+    for y <- 0..map.height do
+      for x <- 0..map.width do
+        IO.write(at(map, x, y))
+      end
+      IO.write("\n")
+    end
+  end
+
   def put(map, x, y, char) do
     data = Map.put(map.data, {x, y}, char)
     Map.put(map, :data, data)
