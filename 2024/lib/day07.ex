@@ -1,7 +1,6 @@
 defmodule Aoc.Day07 do
   @day "07"
 
-
   def part_1(path) do
     compute_with_ops(path, [&add/2, &multiply/2])
   end
@@ -53,7 +52,6 @@ defmodule Aoc.Day07 do
 
     {result, numbers}
   end
-
 
   defp add(a, b), do: a + b
   defp multiply(a, b), do: a * b
