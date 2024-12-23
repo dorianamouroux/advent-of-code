@@ -45,15 +45,21 @@ defmodule Aoc.Map do
   end
 
   def print(map) do
-    for y <- 0..map.height do
-      for x <- 0..map.width do
-        IO.write(at(map, x, y))
+    for y <- 0..(map.height - 1) do
+      for x <- 0..(map.width - 1) do
+        cell = at(map, x, y)
+        IO.write(if(cell != nil, do: cell, else: "."))
       end
       IO.write("\n")
     end
+    map
   end
 
   def put(map, x, y, char) do
+    put(map, {x, y}, char)
+  end
+
+  def put(map, {x, y}, char) do
     data = Map.put(map.data, {x, y}, char)
     Map.put(map, :data, data)
   end
@@ -91,6 +97,5 @@ defmodule Aoc.Map do
       pos = {x + a, y + b}
       {pos, at(map, pos)}
     end)
-    |> Enum.reject(& elem(&1, 1) == nil)
   end
 end

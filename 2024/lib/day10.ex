@@ -55,6 +55,7 @@ defmodule Aoc.Day10 do
 
     map
     |> Aoc.Map.cell_adjacents(current)
+    |> Enum.reject(& elem(&1, 1) == nil)
     |> Enum.filter(fn {_, value_adjacent} ->
       value + 1 == value_adjacent
     end)
