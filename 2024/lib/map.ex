@@ -1,12 +1,27 @@
 defmodule Aoc.Map do
   defstruct [:height, :width, :data]
 
+  @adjacent_modifiers [
+    {-1, 0}, # Up
+    {0, -1}, # Left
+    {0, 1}, # Right
+    {1, 0}, # Down
+  ]
+
   def new(lines) do
     %Aoc.Map{
       height: length(lines),
       width: length(hd(lines)),
       data: to_hashmap(lines)
     }
+  end
+
+  def update_all_cells(map, func) do
+    data = map.data
+    |> Enum.map(fn {pos, value} -> {pos, func.(value)} end)
+    |> Map.new()
+
+    %{map | data: data}
   end
 
   defp to_hashmap(lines) do
@@ -22,6 +37,10 @@ defmodule Aoc.Map do
   end
 
   def at(map, x, y) do
+    at(map, {x, y})
+  end
+
+  def at(map, {x, y}) do
     Map.get(map.data, {x, y})
   end
 
@@ -64,5 +83,14 @@ defmodule Aoc.Map do
       {1, 0}, # Down
       {1, 1}, # Down-Right
     ]
+  end
+
+  def cell_adjacents(map, {x, y}) do
+    @adjacent_modifiers
+    |> Enum.map(fn {a, b} ->
+      pos = {x + a, y + b}
+      {pos, at(map, pos)}
+    end)
+    |> Enum.reject(& elem(&1, 1) == nil)
   end
 end
