@@ -16,7 +16,7 @@ defmodule Aoc.Day14 do
     1..99999999999999
     |> Enum.find(fn i ->
       new_robots = run_cycles(robots, i, 101, 103)
-      Enum.count(new_robots) == Enum.count(MapSet.new(new_robots))
+      check_unique(new_robots)
     end)
     |> tap(fn i ->
       robots
@@ -24,6 +24,15 @@ defmodule Aoc.Day14 do
       |> print(101, 103)
     end)
     |> IO.inspect(label: path)
+  end
+
+  def check_unique([], map), do: true
+  def check_unique([robot | rest_robots], robot_dict \\ %{}) do
+    if Map.has_key?(robot_dict, robot) do
+      false
+    else
+      check_unique(rest_robots, Map.put(robot_dict, robot, true))
+    end
   end
 
   def run_cycles(robots, nb_cycles, width, height) do
