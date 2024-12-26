@@ -32,4 +32,11 @@ defmodule Aoc.Parser do
     |> Enum.map(&String.split(&1, "", trim: true))
     |> Aoc.Map.new()
   end
+
+  def numbers_on_string(str) do
+    ~r/[\-?0-9]+/
+    |> Regex.scan(str)
+    |> List.flatten()
+    |> Enum.map(&String.to_integer/1)
+  end
 end
