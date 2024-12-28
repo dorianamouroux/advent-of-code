@@ -91,9 +91,6 @@ defmodule Aoc.Day15 do
         boxes_to_move = get_boxes_to_move(map, box, direction)
 
         if boxes_to_move do
-
-          # IO.inspect boxes_to_move, label: "boxes_to_move"
-
           map = map
           |> move_all_boxes(boxes_to_move, direction)
           |> Aoc.Map.put(next_cell, "@")
@@ -161,18 +158,15 @@ defmodule Aoc.Day15 do
   end
 
   def get_boxes_to_move(map, boxes, modifier) do
-    impacted_boxes = Enum.map(boxes, & Aoc.Map.apply_modifier(&1, modifier))
-    impacted_boxes = impacted_boxes -- boxes
-    impacted_boxes = impacted_boxes |> Enum.map(&get_full_box(map, &1)) |> List.flatten()
-    impacted_boxes = Enum.reject(impacted_boxes, fn pos ->
-      Aoc.Map.at(map, pos) == "."
-    end)
+    impacted_boxes = boxes
+      |> Enum.map(& Aoc.Map.apply_modifier(&1, modifier))
+      |> then(& &1 -- boxes)
+      |> Enum.map(&get_full_box(map, &1))
+      |> List.flatten()
+      |> Enum.reject(fn pos -> Aoc.Map.at(map, pos) == "." end)
 
     all_empty = Enum.empty?(impacted_boxes)
-
-    has_wall = Enum.any?(impacted_boxes, fn pos ->
-      Aoc.Map.at(map, pos) == "#"
-    end)
+    has_wall = Enum.any?(impacted_boxes, fn pos -> Aoc.Map.at(map, pos) == "#" end)
 
     cond do
       all_empty -> boxes
