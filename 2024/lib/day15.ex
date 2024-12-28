@@ -67,20 +67,13 @@ defmodule Aoc.Day15 do
 
     case Aoc.Map.at(map, next_cell) do
       "." ->
-        map = map
-        |> Aoc.Map.put(next_cell, "@")
-        |> Aoc.Map.put(robot, ".")
-
-        {map, next_cell}
+        move_robot(map, robot, next_cell)
       "O" ->
         empty_space = find_empty_space(map, next_cell, direction)
         if empty_space do
-          map = map
+          map
           |> Aoc.Map.put(empty_space, "O")
-          |> Aoc.Map.put(next_cell, "@")
-          |> Aoc.Map.put(robot, ".")
-
-          {map, next_cell}
+          |> move_robot(robot, next_cell)
         else
           {map, robot}
         end
@@ -91,16 +84,21 @@ defmodule Aoc.Day15 do
         boxes_to_move = get_boxes_to_move(map, box, direction)
 
         if boxes_to_move do
-          map = map
+          map
           |> move_all_boxes(boxes_to_move, direction)
-          |> Aoc.Map.put(next_cell, "@")
-          |> Aoc.Map.put(robot, ".")
-
-          {map, next_cell}
+          |> move_robot(robot, next_cell)
         else
           {map, robot}
         end
     end
+  end
+
+  def move_robot(map, robot, next_cell) do
+    map = map
+    |> Aoc.Map.put(next_cell, "@")
+    |> Aoc.Map.put(robot, ".")
+
+    {map, next_cell}
   end
 
   def find_empty_space(map, next_cell, direction) do
