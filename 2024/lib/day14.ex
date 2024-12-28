@@ -26,8 +26,9 @@ defmodule Aoc.Day14 do
     |> IO.inspect(label: path)
   end
 
-  def check_unique([], map), do: true
-  def check_unique([robot | rest_robots], robot_dict \\ %{}) do
+  def check_unique(robots, robot_dict \\ %{})
+  def check_unique([], _map), do: true
+  def check_unique([robot | rest_robots], robot_dict) do
     if Map.has_key?(robot_dict, robot) do
       false
     else

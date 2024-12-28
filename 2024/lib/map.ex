@@ -8,6 +8,16 @@ defmodule Aoc.Map do
     {1, 0}, # Down
   ]
 
+  def new(data) when is_map(data) do
+    {{max_x, _}, _} = Enum.max_by(data, fn {{x, _y}, _value} -> x end)
+    {{_, max_y}, _} = Enum.max_by(data, fn {{_x, y}, _value} -> y end)
+    %Aoc.Map{
+      height: max_y + 1,
+      width: max_x + 1,
+      data: data
+    }
+  end
+
   def new(lines) do
     %Aoc.Map{
       height: length(lines),
@@ -97,5 +107,9 @@ defmodule Aoc.Map do
       pos = {x + a, y + b}
       {pos, at(map, pos)}
     end)
+  end
+
+  def apply_modifier({a, b}, {x, y}) do
+    {a + x, b + y}
   end
 end
