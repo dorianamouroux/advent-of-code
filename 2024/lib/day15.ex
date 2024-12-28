@@ -7,23 +7,10 @@ defmodule Aoc.Day15 do
     "v" => {0, 1},
   }
 
-  def part_1(path) do
+  def resolve(path, large_map \\ false) do
     {map, instructions} = parse(path)
 
-    {robot, _} = map
-    |> Aoc.Map.all_cells()
-    |> Enum.find(fn {_, value} -> value == "@" end)
-
-    instructions
-    |> Enum.reduce({map, robot}, &move_robot/2)
-    |> compute_score()
-    |> IO.inspect(label: path)
-  end
-
-  def part_2(path) do
-    {map, instructions} = parse(path)
-
-    map = double_map(map)
+    map = if(large_map, do: double_map(map), else: map)
 
     {robot, _} = map
     |> Aoc.Map.all_cells()
@@ -37,12 +24,12 @@ defmodule Aoc.Day15 do
 
   def main() do
     IO.inspect("part 1")
-    part_1("inputs/day#{@day}_example.txt")
-    part_1("inputs/day#{@day}_input.txt")
+    resolve("inputs/day#{@day}_example.txt")
+    resolve("inputs/day#{@day}_input.txt")
 
     IO.inspect("part 2")
-    part_2("inputs/day#{@day}_example.txt")
-    part_2("inputs/day#{@day}_input.txt")
+    resolve("inputs/day#{@day}_example.txt", true)
+    resolve("inputs/day#{@day}_input.txt", true)
   end
 
   def parse(path) do
@@ -140,10 +127,9 @@ defmodule Aoc.Day15 do
     |> Enum.map(fn {{x, y}, value} ->
       if value == "O" || value == "[" do
         x + (y * 100)
-      else
-        0
       end
     end)
+    |> Enum.reject(&is_nil/1)
     |> Enum.sum()
   end
 
