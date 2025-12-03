@@ -112,4 +112,10 @@ defmodule Aoc.Map do
   def apply_modifier({a, b}, {x, y}) do
     {a + x, b + y}
   end
+
+  def find_cell(map, value) do
+    map
+    |> Aoc.Map.all_cells()
+    |> Enum.find(& elem(&1, 1) == value)
+  end
 end
