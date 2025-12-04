@@ -26,13 +26,13 @@ defmodule Aoc.Parser do
     end)
   end
 
-  # def map(path) do
-  #   path
-  #   |> File.read!()
-  #   |> String.split("\n", trim: true)
-  #   |> Enum.map(&String.split(&1, "", trim: true))
-  #   |> Aoc.Map.new()
-  # end
+  def map(path) do
+    path
+    |> File.read!()
+    |> String.split("\n", trim: true)
+    |> Enum.map(&String.split(&1, "", trim: true))
+    |> Aoc.Map.new()
+  end
 
   def numbers_on_string(str) do
     ~r/[\-?0-9]+/
