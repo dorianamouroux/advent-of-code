@@ -22,6 +22,7 @@ defmodule Aoc.Day05 do
     ranges
     |> Enum.sort()
     |> merge_ranges([])
+    |> IO.inspect(label: "merged")
     |> Enum.map(&Range.size/1)
     |> Enum.sum()
     |> IO.inspect(label: path)

@@ -50,6 +50,7 @@ defmodule Aoc.Map do
 
     map
     |> List.flatten()
+    |> Enum.uniq()
     |> Map.new()
   end
 
@@ -78,6 +79,10 @@ defmodule Aoc.Map do
     put(map, {x, y}, char)
   end
 
+  @spec put(%{optional(:data) => map(), optional(any()) => any()}, {any(), any()}, any()) :: %{
+          :data => map(),
+          optional(any()) => any()
+        }
   def put(map, {x, y}, char) do
     data = Map.put(map.data, {x, y}, char)
     Map.put(map, :data, data)
