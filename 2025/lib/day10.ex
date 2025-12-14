@@ -8,28 +8,13 @@ defmodule Aoc.Day10 do
       [pattern | rest] = String.split(line, " ")
       {_volts, buttons} = List.pop_at(rest, -1)
 
-      {parse_pattern(pattern), parse_buttons(buttons)}
-    end)
-    |> Enum.map(fn {pattern, buttons}  ->
-      pattern
-      |> find_faster_combination(buttons)
-      |> Enum.map(fn solutions ->
-        solutions
-        |> Tuple.to_list()
-        |> length()
-      end)
-      |> Enum.min()
-      |> IO.inspect(label: pattern)
+      pattern = parse_pattern(pattern)
+      buttons = parse_buttons(buttons)
+
+      find_faster_combination(pattern, buttons)
     end)
     |> Enum.sum()
     |> IO.inspect(label: path)
-
-    # "...."
-    # |> press_button([1, 3])
-    # |> IO.inspect
-
-    # find_faster_combination(pattern, buttons)
-    # |> IO.inspect(limit: :infinity)
   end
 
   def part_2(path) do
@@ -47,23 +32,14 @@ defmodule Aoc.Day10 do
     # part_2("inputs/day#{@day}_input.txt")
   end
 
-  defp press_button(pattern, button) do
-    Enum.reduce(button, pattern, fn i, pattern ->
-      new_char = case String.at(pattern, i) do
-        "#" -> "."
-        "." -> "#"
-      end
-
-      left  = String.slice(pattern, 0, i)
-      right = String.slice(pattern, i + 1, String.length(pattern) - i - 1)
-      left <> new_char <> right
-    end)
-  end
-
   defp parse_pattern(pattern) do
     pattern
     |> String.replace("[", "")
     |> String.replace("]", "")
+    |> String.replace("#", "1")
+    |> String.replace(".", "0")
+    |> String.reverse()
+    |> String.to_integer(2)
   end
 
   defp parse_buttons(buttons) do
@@ -73,30 +49,33 @@ defmodule Aoc.Day10 do
       |> String.replace(")", "")
       |> String.split(",")
       |> Enum.map(&String.to_integer/1)
+      |> Enum.reduce(0, fn acc, button ->
+        Bitwise.bor(button, Bitwise.bsl(1, acc))
+      end)
     end)
   end
 
-  defp find_faster_combination(end_pattern, buttons, current_pattern \\ nil, pressed \\ [])
-  defp find_faster_combination(end_pattern, buttons, nil, pressed) do
-    current_pattern = "."
-    |> List.duplicate(String.length(end_pattern))
-    |> to_string()
+  defp find_faster_combination(end_pattern, buttons) do
+    1..length(buttons)
+    |> Enum.reduce_while(nil, fn i, nil ->
+      buttons
+      |> Combination.combine(i)
+      |> Enum.find(fn combination ->
+        new_pattern =
+          Enum.reduce(combination, 0, fn button, pattern ->
+            # pressing button is a xor operation
+            Bitwise.bxor(button, pattern)
+          end)
 
-    find_faster_combination(end_pattern, buttons, current_pattern, pressed)
-  end
+        new_pattern == end_pattern
+      end)
+      |> case do
+        nil ->
+          {:cont, nil}
 
-  defp find_faster_combination(pattern, buttons, current_pattern, pressed) do
-    buttons
-    |> Enum.reject(& &1 in pressed)
-    |> Enum.reduce([], fn button, solutions ->
-      current_pattern = press_button(current_pattern, button)
-      if current_pattern == pattern do
-        solutions ++ [List.to_tuple([button | pressed])]
-      else
-        solutions ++ find_faster_combination(pattern, buttons, current_pattern, [button | pressed])
+        _ ->
+          {:halt, i}
       end
     end)
-    |> Enum.filter(fn a -> a end)
-    |> List.flatten()
   end
 end
