@@ -31,6 +31,14 @@ defmodule Aoc.Map do
     }
   end
 
+  def new(width, height) when is_integer(width) and is_integer(height) do
+    %Aoc.Map{
+      height: height,
+      width: width,
+      data: Map.new()
+    }
+  end
+
   def update_all_cells(map, func) do
     data =
       map.data

@@ -40,4 +40,15 @@ defmodule Aoc.Parser do
     |> List.flatten()
     |> Enum.map(&String.to_integer/1)
   end
+
+  def points_per_line(path) do
+    path
+    |> lines()
+    |> Enum.map(fn line ->
+      line
+      |> String.split(",")
+      |> Enum.map(&String.to_integer/1)
+      |> List.to_tuple()
+    end)
+  end
 end
