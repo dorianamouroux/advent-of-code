@@ -79,7 +79,7 @@ defmodule Aoc.Day08 do
     dx = x1 - x2
     dy = y1 - y2
     dz = z1 - z2
-    :math.sqrt(dx * dx + dy * dy + dz * dz)
+    dx * dx + dy * dy + dz * dz
   end
 
   defp compute_distances(boxes, results \\ [])
