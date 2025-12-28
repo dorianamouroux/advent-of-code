@@ -33,8 +33,9 @@ defmodule Aoc.Day11 do
   defp count_paths(_graph, node, node, cache), do: {1, cache}
 
   defp count_paths(graph, current_node, end_node, cache) do
-    if Map.has_key?(cache, {current_node, end_node}) do
-      count = Map.get(cache, {current_node, end_node})
+    key = {current_node, end_node}
+    if Map.has_key?(cache, key) do
+      count = Map.get(cache, key)
       {count, cache}
     else
       {count, cache} =
@@ -45,7 +46,7 @@ defmodule Aoc.Day11 do
           {current_count + count, cache}
         end)
 
-      {count, Map.put(cache, {current_node, end_node}, count)}
+      {count, Map.put(cache, key, count)}
     end
   end
 
