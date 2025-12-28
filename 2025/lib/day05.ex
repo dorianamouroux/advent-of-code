@@ -20,31 +20,10 @@ defmodule Aoc.Day05 do
     ranges = get_ranges(all_ranges)
 
     ranges
-    |> Enum.sort()
-    |> merge_ranges([])
-    |> IO.inspect(label: "merged")
+    |> Aoc.Ranges.merge_ranges()
     |> Enum.map(&Range.size/1)
     |> Enum.sum()
     |> IO.inspect(label: path)
-  end
-
-  defp merge_ranges([], merged), do: merged
-
-  defp merge_ranges([current_range | rest_ranges], []),
-    do: merge_ranges(rest_ranges, [current_range])
-
-  defp merge_ranges([current_range | rest_ranges], merged) do
-    last_range = hd(merged)
-
-    if Range.disjoint?(current_range, last_range) do
-      merge_ranges(rest_ranges, [current_range | merged])
-    else
-      [last_range | rest_merged] = merged
-      start_range = last_range.first
-      end_range = Enum.max([current_range.last, last_range.last])
-      new_range = start_range..end_range
-      merge_ranges(rest_ranges, [new_range | rest_merged])
-    end
   end
 
   def main() do
